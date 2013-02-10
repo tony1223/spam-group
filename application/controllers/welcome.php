@@ -26,7 +26,7 @@ class Welcome extends MY_Controller {
 		$gids = $this->GroupModel->getGIDs();
 		$this->load->view('welcome_message',
 			Array(
-				"pageTitle" => "Facebook 社團檢查器",
+				"pageTitle" => "Facebook 廣告社團檢查器",
 				"fbgids" => $gids
 			)
 		);
