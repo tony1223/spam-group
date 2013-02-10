@@ -274,14 +274,20 @@
 			var groups = $(this).data("groups");
 			var gids = groups.split(",");
 
-			FB.ui({
-	          method: 'send',
-	          name: 'Facebook 廣告社團檢查器',
-	          link: 'http://spamgroup.tonyq.org/?from='+uid,
-	          to: $(this).data("uid"),
-	          picture:"http://i.imgur.com/3zUJkro.jpg?1?2109",
-		      description: $(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！"
-            });
+			window.open("https://www.facebook.com/dialog/feed?app_id=135395566627129&link="+encodeURI('http://spamgroup.tonyq.org/?from='+uid)+
+					"&name="+encodeURI('Facebook 廣告社團檢查器')+
+					"&to="+encodeURI($(this).data("uid"))+
+					"&picture="+encodeURI("http://i.imgur.com/3zUJkro.jpg?1?2109")+
+					"&description=" +encodeURI($(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！")+
+					"&redirect_uri=http://spamgroup.tonyq.org");
+//			FB.ui({
+//	          method: 'send',
+//	          name: 'Facebook 廣告社團檢查器',
+//	          link: 'http://spamgroup.tonyq.org/?from='+uid,
+//	          to: $(this).data("uid"),
+//	          picture:"http://i.imgur.com/3zUJkro.jpg?1?2109",
+//		      description: $(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！"
+//            });
 			return false;
 		});
 	}
