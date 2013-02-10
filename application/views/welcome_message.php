@@ -4,7 +4,7 @@
 	<div class="well span8">
 		<h1>Facebook 廣告社團檢查器</h1>
 		<p> 現在就檢查是否被惡意加入社團！ </p>
-		<p><div style="height:60px;" class="fb-like" data-send="false" data-width="450" data-show-faces="true"></div></p>
+		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
 	<div class="well span8 row">
 		<p>
@@ -317,7 +317,7 @@
      var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
      if (d.getElementById(id)) {return;}
      js = d.createElement('script'); js.id = id; js.async = true;
-     js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+     js.src = "//connect.facebook.net/zh_TW/all" + (debug ? "/debug" : "") + ".js";
      ref.parentNode.insertBefore(js, ref);
    }(document, /*debug*/ false));
 
