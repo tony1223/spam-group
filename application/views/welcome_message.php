@@ -20,7 +20,7 @@
 			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button>
 			<br />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button class="js-checkfriend-group" disabled> 檢查朋友(朋友多可能會花上好幾分鐘 XD)</button>
+			<!--  <button class="js-checkfriend-group" disabled> 檢查朋友(朋友多可能會花上好幾分鐘 XD)</button>  -->
 			<button class="js-end" disabled >取消授權並登出</button>
 		</div>
 		<br />
@@ -95,7 +95,7 @@
 			var rule_gid = [];
 			if(gids){
 				for(var i = 0; i < gids.length;i++){
-					rule_gid.push("'"+gids[i]+"'");
+					rule_gid.push("'"+gids[i].GID+"'");
 				}
 			}
 			FB.api({
