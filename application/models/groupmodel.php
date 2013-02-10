@@ -6,7 +6,7 @@ class GroupModel extends CI_Model {
     }
 
     function getGIDs(){
-    	$this->db->select("GID");
+    	$this->db->select("GID,Name");
     	$query = $this->db->get("spamgroup");
     	$items = $query->result();
     	return $items;

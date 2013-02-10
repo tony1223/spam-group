@@ -18,10 +18,10 @@
 			<button class="js-start" >取得授權</button>  -&gt;
 			<button class="js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
 			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button>
+			<button class="js-end" disabled >取消授權並結束</button>
 			<br />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<!--  <button class="js-checkfriend-group" disabled> 檢查朋友(朋友多可能會花上好幾分鐘 XD)</button>  -->
-			<button class="js-end" disabled >取消授權並登出</button>
+			<button class="js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查(朋友多可能會花上好幾分鐘 )</button>
 		</div>
 		<br />
 		<div>
@@ -33,9 +33,15 @@
 		<br />
 		<br />
 	</div>
-	<div class="friends well" id="friends" style="display:none;">
-		<div id="friends-list"></div>
-		<div id="friends-msg" class="alert alert-info">處理中...請稍後...</div>
+	<div class="friends span8 row well" id="friends" style="display:none;">
+		<div class="alert alert-info">
+			<div id="friends-msg">處理中...請稍後...</div>
+			<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
+		</div>
+		<div id="users">累計人數: 0</div>
+		<div id="groups">累計加入社團數: 0</div>
+		<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入社團名稱</td><td></td></tr> </table>
+		<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
 	</div>
 	<div class="span8 row">
 			註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
@@ -139,10 +145,121 @@
 		});
 
 		$(".js-checkfriend-group").click(function(){
+			$(this).prop("disabled","disabled");
+			$(".loader").show();
 			$("#friends").show();
-//$("#friends-list").
+			var gids = $(this).data("gids");
+			var groups = {};
+			var rule_gid = [];
+			var effect_user_count = 0, effect_group_count = 0;
+			if(gids){
+				for(var i = 0; i < gids.length;i++){
+					groups[gids[i].GID] = gids[i].Name;
+					rule_gid.push("'"+gids[i].GID+"'");
+				}
+			}
+
+			var friendlistReq = $.Deferred();
+			$("#friends-msg").text("取得朋友清單中...");
+			FB.api({
+			    method: 'fql.query',
+			    query: 'select name,uid from user where uid in (SELECT uid2 FROM friend WHERE uid1 = me())'
+			},function(response){
+				var users = {};
+				$.each(response,function(){
+					users[this.uid] = this.name;
+				});
+				friendlistReq.resolve(users,response);
+			});
+
+			function parse(users,list,index){
+				var amount = 50;
+				var parseReq = $.Deferred();
+				var user_ids = [];
+				var indexEnd = index ;
+				for(var i = index; i < list.length && i < index + amount;++i,++indexEnd){
+					user_ids.push("'"+list[i].uid+"'");
+				}
+				$("#friends-msg").append("檢查第 "+ (index +1)+" 到 "+ (indexEnd) +" 位朋友...");
+				FB.api({method:"fql.query",
+						query:"select uid,gid from group_member where gid in ("+rule_gid.join(",")+") and uid in ("+user_ids.join(",")+") order by uid desc "},
+						function(response){
+					if(response.length >0 ){
+						var out = [];
+						var last_uid = null,
+							last_groups = [];;
+
+						for(var i = 0 ; i < response.length;++i){
+							if(last_uid == null){
+								last_uid = response[i].uid;
+								last_groups = [response[i].gid];
+								effect_user_count++;
+								effect_group_count++;
+							}else if(last_uid != response[i].uid){
+								effect_user_count++;
+								if(last_groups.length){
+									out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
+									$.each(last_groups,function(ind,item){
+										out.push("<a href=''>"+groups[item]+"</a><Br />");
+									});
+									out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
+								}
+								last_uid = response[i].uid;
+								last_groups = [response[i].gid];
+								effect_group_count++;
+							}else{
+								effect_group_count++;
+								last_groups.push(response[i].gid);
+							}
+						}
+						if(last_uid != null){
+							if(last_groups.length){
+								out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
+								$.each(last_groups,function(ind,item){
+									out.push("<a href=''>"+groups[item]+"</a><Br />");
+								});
+								out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
+							}
+						}
+						$("#friends-list").append(out.join(""));
+
+					}
+					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + parseInt((effect_user_count / list.length) * 100,10) +"%"  );
+					$("#groups").text("累計加入社團數:"+effect_group_count);
+					$("#friends-msg").append("完成 ("+ parseInt((indexEnd / list.length) *100,10)+"%) <Br />");
+					if(indexEnd < list.length){
+						parseReq.resolve(indexEnd,true);
+					}else{
+						parseReq.resolve(indexEnd,false);
+					}
+				});
+				return parseReq;
+			}
+			friendlistReq.then(function(users,list){
+				$("#friends-msg").append("已取得朋友清單，朋友有 "+list.length+" 名..." +"<Br />");
+				function go(index){
+					var def = parse(users,list,index);
+					def.then(function(indexEnd,keep){
+						console.log(arguments);
+						if(keep){
+							go(indexEnd);
+						}else{
+							$("#friends-msg").append("朋友分析結束 <br />");
+							$(".loader").hide();
+							$(this).prop("disabled","");
+							if(_gaq) {
+								 _gaq.push(['_trackEvent', 'Friend', "finish",uid+"::"+effect_user_count+"/"+list.length+" ("+parseInt((effect_user_count / list.length) * 100,10) +"%"+"),group_count:"+effect_group_count]);
+							}
+						}
+					});
+				}
+				go(0);
+			});
 
 			$("#friends-msg").show();
+			if(_gaq) {
+				 _gaq.push(['_trackEvent', 'Friend', "check",uid]);
+			}
 		});
 	}
 </script>
