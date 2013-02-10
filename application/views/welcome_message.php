@@ -240,7 +240,6 @@
 				function go(index){
 					var def = parse(users,list,index);
 					def.then(function(indexEnd,keep){
-						console.log(arguments);
 						if(keep){
 							go(indexEnd);
 						}else{
