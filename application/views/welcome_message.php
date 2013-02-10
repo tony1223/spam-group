@@ -200,7 +200,7 @@
 								if(last_groups.length){
 									out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
 									$.each(last_groups,function(ind,item){
-										out.push("<a href=''>"+groups[item]+"</a><Br />");
+										out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
 									});
 									out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
 								}
@@ -216,7 +216,7 @@
 							if(last_groups.length){
 								out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
 								$.each(last_groups,function(ind,item){
-									out.push("<a href=''>"+groups[item]+"</a><Br />");
+									out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
 								});
 								out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
 							}
