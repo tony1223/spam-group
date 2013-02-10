@@ -9,12 +9,16 @@
 	<div class="well span8 row">
 		<p>
 			請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
+			相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！<br />
 
+			<br />
+			不安全、<b style="color:red;">透過盜帳號惡意加入使用者</b>的購物社團可說是一種新型的網路蟑螂，
 			我們希望透過系統方式響應此一活動，讓使用者更方便檢查自己是否被惡意加入社團以方便退出社團，
 			或許你有朋友也在這些社團裡面，快分享給你的朋友吧！
+			<br /><br />
 		</p>
 		<div>
-			依照以下流程順序點擊按鈕：<Br />
+			使用方法：請依照以下流程順序點擊按鈕：<Br />
 			<button class="js-start" >取得授權</button>  -&gt;
 			<button class="js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
 			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
