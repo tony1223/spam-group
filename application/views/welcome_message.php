@@ -17,7 +17,7 @@
 			依照以下流程順序點擊按鈕：<Br />
 			<button class="js-start" >取得授權</button>  -&gt;
 			<button class="js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
-			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button>
+			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
 			<button class="js-end" disabled >取消授權並結束</button>
 			<br />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
