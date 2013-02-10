@@ -199,10 +199,12 @@
 								effect_user_count++;
 								if(last_groups.length){
 									out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
+									var group_names = [];
 									$.each(last_groups,function(ind,item){
 										out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
+										group_names.push(groups[item]);
 									});
-									out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
+									out.push("<td><a class='btn js-msg' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"' data-uid='"+last_uid+"' data-uname='"+users[last_uid]+"' data-groups='"+group_names.join(",")+"' >傳訊息告訴他</a></td></tr>");
 								}
 								last_uid = response[i].uid;
 								last_groups = [response[i].gid];
@@ -215,10 +217,12 @@
 						if(last_uid != null){
 							if(last_groups.length){
 								out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
+								var group_names = [];
 								$.each(last_groups,function(ind,item){
 									out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
+									group_names.push(groups[item]);
 								});
-								out.push("<td><a class='btn' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"'>傳訊息告訴他</a></td></tr>");
+								out.push("<td><a class='btn js-msg' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"' data-uid='"+last_uid+"' data-uname='"+users[last_uid]+"' data-groups='"+group_names.join(",")+"' >傳訊息告訴他</a></td></tr>");
 							}
 						}
 						$("#friends-list").append(out.join(""));
@@ -259,6 +263,22 @@
 			if(_gaq) {
 				 _gaq.push(['_trackEvent', 'Friend', "check",uid]);
 			}
+		});
+
+		$("#friends-list").on("click",".js-msg",function(){
+			$(this).addClass("btn-warning");
+			var groups = $(this).data("groups");
+			var gids = groups.split(",");
+
+			FB.ui({
+	          method: 'send',
+	          name: 'Facebook 廣告社團檢查器',
+	          link: 'http://spamgroup.tonyq.org/?from='+uid,
+	          to: $(this).data("uid"),
+	          picture:"http://i.imgur.com/3zUJkro.jpg?1?2109",
+		      description: $(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！"
+            });
+			return false;
 		});
 	}
 </script>
