@@ -273,11 +273,11 @@
 			$(this).addClass("btn-warning");
 			var groups = $(this).data("groups");
 			var gids = groups.split(",");
-			window.open("https://www.facebook.com/dialog/feed?app_id=135395566627129&link="+encodeURI('http://spamgroup.tonyq.org/?from='+uid)+
-					"&name="+encodeURI('Facebook 廣告社團檢查器')+
-					"&to="+encodeURI($(this).data("uid"))+
-					"&picture="+encodeURI("http://i.imgur.com/3zUJkro.jpg?1?2109")+
-					"&description=" +encodeURI($(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！")+
+			window.open("https://www.facebook.com/dialog/feed?app_id=135395566627129&link="+encodeURIComponent('http://spamgroup.tonyq.org/?from='+uid)+
+					"&name="+encodeURIComponent('Facebook 廣告社團檢查器')+
+					"&to="+encodeURIComponent($(this).data("uid"))+
+					"&picture="+encodeURIComponent("http://i.imgur.com/3zUJkro.jpg?1?2109")+
+					"&description=" +encodeURIComponent($(this).data("uname")+ " 似乎被加入廣告社團 (" + groups+")，提醒他趕快取消社團吧！消滅廣告社團，人人有責！")+
 					"&redirect_uri=http://spamgroup.tonyq.org");
 			if(_gaq) {
 				 _gaq.push(['_trackEvent', 'Friend', "invite",uid +":"+$(this).data("uid") ]);
