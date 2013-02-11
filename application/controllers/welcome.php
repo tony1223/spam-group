@@ -31,6 +31,10 @@ class Welcome extends MY_Controller {
 			)
 		);
 	}
+
+	public function privacy(){
+		echo "本應用程式將取得您的社團清單與您的朋友的社團清單，以為您檢查是否有加入惡意社團清單。";
+	}
 }
 
 /* End of file welcome.php */
