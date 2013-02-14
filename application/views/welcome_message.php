@@ -1,5 +1,4 @@
 <?php include("_site_header.php") ?>
-
 <div class="container">
 	<div class="well span8">
 		<h1>Facebook 廣告社團檢查器</h1>
@@ -56,9 +55,12 @@
 	<div class="span8 row">
 		本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
 			若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
-			<br /><br /><br />
+			<br />
+			<br />
 	</div>
+	<?php include("_content_nav.php");?>
 </div>
+
 <div id="fb-root"></div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>

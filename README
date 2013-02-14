@@ -1,0 +1,23 @@
+
+
+This project is created to find joined spam groups of user and users' friend.
+It's based on PHP CodeIgniter framework, so you need all php stack to run this.
+
+
+To setup the project , you need to do following steps:
+
+1.setup database
+We use mysql to develope this,you could find the sql file in application/sql folder.
+
+2.setup database setting
+
+Please clone "application/config/database.php.sample.php" to
+"application/config/database.php" and make sure you set it with right user name/pwd .
+(More info: http://ellislab.com/codeigniter/user-guide/database/connecting.html )
+
+
+It's now only for Traditional Chinese version ,
+welcome to fork it and modify it.
+
+The project is under CC-BY or you could discuss with TonyQ. :p
+

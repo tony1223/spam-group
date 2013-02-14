@@ -41,6 +41,9 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 $route["privacy"] = "welcome/privacy";
+$route["groups/(:any)"] = "welcome/groups/$1";
+$route["groups"] = "welcome/groups/$1";
+
 
 
 /* End of file routes.php */

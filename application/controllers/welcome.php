@@ -27,7 +27,46 @@ class Welcome extends MY_Controller {
 		$this->load->view('welcome_message',
 			Array(
 				"pageTitle" => "Facebook 廣告社團檢查器",
-				"fbgids" => $gids
+				"fbgids" => $gids,
+				"selector" => "check"
+			)
+		);
+	}
+
+	public function groups($type="web"){
+		$gids = $this->GroupModel->getGIDs();
+
+		if($type == "json"){
+			echo json_encode($gids);
+			return true;
+		}
+		if($type == "jsonp"){
+			$jsonp = $this->input->get("jsonp");
+			if(!empty($jsonp)){
+				echo $jsonp."(".json_encode($gids).")";
+			}else{
+				echo json_encode($gids);
+			}
+			return true;
+		}
+
+
+		$this->load->view('group_list',
+			Array(
+				"pageTitle" => "Facebook 廣告社團列表",
+				"fbgids" => $gids,
+				"selector" => "group"
+			)
+		);
+	}
+
+	public function report(){
+		$gids = $this->GroupModel->getGIDs();
+		$this->load->view('report',
+			Array(
+				"pageTitle" => "Facebook 回報廣告社團",
+				"fbgids" => $gids,
+				"selector" => "report"
 			)
 		);
 	}

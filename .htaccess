@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php|sitemap.xml|google4c05f|activity|ckeditor|image|css|blog|js|store|deco_designer|blog|5945wiki|back_private_admin|designer|upload_request_image|robots\.txt|favoicon.ico)
+RewriteRule ^(.*)$ index.php/$1 [L]
+

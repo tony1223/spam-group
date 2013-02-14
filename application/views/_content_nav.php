@@ -1,30 +1,10 @@
-<!-- Content Header -->
-<div class="content-header">
-	<div class="navbar navbar-inverse">
-	  <div class="navbar-inner">
-	    <a class="brand" href="<?=site_url("/")?>">The Articles</a>
-	    <ul class="nav">
-	      <li><a href="<?=site_url("/")?>">Home</a></li>
-	      	<?php if(isset($_SESSION["user"]) && $_SESSION["user"] != null){?>
-	      		<li><a href="<?=site_url("article/author/".$_SESSION["user"]->Account)?>">
-	      			My Articles</a></li>
-	  		<?php } ?>
-	    </ul>
-	    <!-- login status -->
-	    <?php if(isset($_SESSION["user"]) && $_SESSION["user"] != null){ ?>
-		<ul class="nav pull-right">
-          <li><a href="#">Hi <?=$_SESSION["user"]->Account?></a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="<?=site_url("user/logout")?>">登出</a></li>
-          <li><a href="<?=site_url("article/post")?>">發文</a></li>
-        </ul>
-        <?php }else{ ?> 
-		<ul class="nav pull-right">
-          <li><a href="<?=site_url("user/login")?>">登入</a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="<?=site_url("user/register")?>">註冊</a></li>
-        </ul>        
-        <?php } ?>
-	  </div>
-	</div>
+<div class="span8 navbar" style="width:auto;">
+  <div class="navbar-inner">
+    <ul class="nav">
+      <li <?php if($selector=="check") { ?> class="active" <?php }?>><a href="<?=site_url("/")?>">檢查</a></li>
+      <li <?php if($selector=="group") { ?> class="active" <?php }?>><a href="<?=site_url("/groups")?>">社團清單(API)</a></li>
+      <li <?php if($selector=="report") { ?> class="active" <?php }?>><a href="<?=site_url("/report")?>">回報新廣告社團</a></li>
+      <li class="pull-right"><a target="_blank" href="https://github.com/tony1223/spam-group">專案原始碼(Github)</a></li>
+    </ul>
+  </div>
 </div>
