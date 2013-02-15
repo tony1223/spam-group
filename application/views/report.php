@@ -30,13 +30,14 @@
 	</div>
 	<div class="groups span8 offset1 well" id="groups" style="display:none;">
 		查詢紀錄
-		<table id="group-info" class="table" >
+		<table class="table" >
 			<tr>
 				<td>社團編號(gid)</td>
 				<td>社團名稱</td>
 				<td>狀態</td>
 				<td>檢舉情形</td>
 			</tr>
+			<tbody id="group-info"></tbody>
 		</table>
 	</div>
 	<div class="span8 offset1">
@@ -150,7 +151,7 @@
 					}
 
 					out.push("</tr>");
-					$("#group-info").append(out.join(""));
+					$("#group-info").prepend(out.join(""));
 				});
 			});
 
