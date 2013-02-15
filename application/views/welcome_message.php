@@ -188,7 +188,6 @@
 				for(var i = index; i < list.length && i < index + amount;++i,++indexEnd){
 					user_ids.push("'"+list[i].uid+"'");
 				}
-				$("#friends-msg").append("檢查第 "+ (index +1)+" 到 "+ (indexEnd) +" 位朋友...");
 				FB.api({method:"fql.query",
 						query:"select uid,gid from group_member where gid in ("+rule_gid.join(",")+") and uid in ("+user_ids.join(",")+") order by uid desc "},
 						function(response){
@@ -238,29 +237,31 @@
 					}
 					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + parseInt((effect_user_count / list.length) * 100,10) +"%"  );
 					$("#groups").text("累計加入社團數:"+effect_group_count);
-					$("#friends-msg").append("完成 ("+ parseInt((indexEnd / list.length) *100,10)+"%)，已經過 "+ parseInt((new Date().getTime() - time_start.getTime() )/1000,10)+" 秒  <Br />");
+					$("#friends-msg").append("檢查第 "+ (index +1)+" 到 "+ (indexEnd) +" 位朋友");
+					$("#friends-msg").append("完成，已經過 "+ parseInt((new Date().getTime() - time_start.getTime() )/1000,10)+" 秒  <Br />");
 					if(indexEnd < list.length){
 						parseReq.resolve(indexEnd,true);
 					}else{
 						parseReq.resolve(indexEnd,false);
 					}
 				});
-				return parseReq;
+				return {promise:parseReq,index:indexEnd};
 			}
 			friendlistReq.then(function(users,list){
 				$("#friends-msg").append("已取得朋友清單，朋友有 "+list.length+" 名..." +"<Br />");
 				function go(index){
-					var def = parse(users,list,index);
-					def.then(function(indexEnd,keep){
-						if(keep){
-							go(indexEnd);
-						}else{
-							$("#friends-msg").append("朋友分析結束 <br />");
-							$(".loader").hide();
-							$(this).prop("disabled","");
-							if(_gaq) {
-								 _gaq.push(['_trackEvent', 'Friend', "finish",uid+"::"+effect_user_count+"/"+list.length+" ("+parseInt((effect_user_count / list.length) * 100,10) +"%"+"),group_count:"+effect_group_count]);
-							}
+					var promises= [] , def = parse(users,list,index);
+					while(def.index < list.length){
+						promises.push(def.promise);
+						def = parse(users,list,def.index);
+					}
+					promises.push(def.promise);
+					$.when.apply($,promises).done(function(indexEnd,keep){
+						$("#friends-msg").append("朋友分析結束 <br />");
+						$(".loader").hide();
+						$(this).prop("disabled","");
+						if(_gaq) {
+							 _gaq.push(['_trackEvent', 'Friend', "finish",uid+"::"+effect_user_count+"/"+list.length+" ("+parseInt((effect_user_count / list.length) * 100,10) +"%"+"),group_count:"+effect_group_count]);
 						}
 					});
 				}
