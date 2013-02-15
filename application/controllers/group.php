@@ -78,13 +78,64 @@ class Group extends MY_Controller {
 	public function confirming($type="web"){
 		$gids = $this->GroupModel->getConfirmingGIDs();
 
-		$this->load->view('group_list',
+		$this->load->view('group_confirm_list',
 			Array(
 				"pageTitle" => "審核中 Facebook 廣告社團列表",
 				"fbgids" => $gids,
 				"selector" => "group"
 			)
 		);
+	}
+
+	public function admin_login(){
+		try{
+			$token = $this->input->get("access_token");
+			$items = $this->get("https://graph.facebook.com/me?access_token=".($token));
+			$obj = json_decode($items);
+			if(@$obj->id == "1403951219"){
+				$_SESSION["admin"] = $obj->id;
+				echo json_encode(Array("IsSuccess" => true));
+			}else{
+				echo json_encode(Array("IsSuccess" => false));
+			}
+			return true;
+		}catch(Exception $ex){
+			echo json_encode(Array("IsSuccess" => false));
+			return true;
+		}
+	}
+
+	public function js_confirming(){
+		if(!isset($_SESSION["admin"])){
+			echo json_encode(Array("IsSuccess" => false));
+			return false;
+		}
+
+		$gid = $this->input->post("gid");
+
+		$groupid = $this->GroupModel->confirm($gid);
+		echo json_encode(Array("IsSuccess" => true));
+	}
+
+	private function get($url){
+		$options = array (CURLOPT_RETURNTRANSFER => true, // return web page
+		CURLOPT_FOLLOWLOCATION => true, // follow redirects
+		CURLOPT_ENCODING => "", // handle compressed
+		CURLOPT_AUTOREFERER => true, // set referer on redirect
+		CURLOPT_CONNECTTIMEOUT => 120, // timeout on connect
+		CURLOPT_TIMEOUT => 120, // timeout on response
+		CURLOPT_MAXREDIRS => 10 ); // stop after 10 redirects
+
+		$ch = curl_init ( $url );
+		curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,0);
+  		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,0);
+		curl_setopt_array ( $ch, $options );
+
+//		curl_setopt($ch,CURLOPT_POST, true);
+//		curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($fields));
+
+		//execute postc
+		return curl_exec($ch);
 	}
 
 	public function report(){

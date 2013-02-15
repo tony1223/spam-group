@@ -5,6 +5,11 @@ class GroupModel extends CI_Model {
         parent::__construct();
     }
 
+    function confirm($gid){
+    	$this->db->where("GID" , $gid);
+    	$this->db->update("spamgroup",Array("Enabled" => true, "ModifyDate" => db_current_date()));
+    }
+
     function find_by_gid($gid){
     	$this->db->select("GID,Name,CreateDate,ModifyDate,Enabled");
     	$this->db->where("GID",$gid);
