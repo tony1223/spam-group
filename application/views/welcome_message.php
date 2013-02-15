@@ -1,4 +1,9 @@
 <?php include("_site_header.php") ?>
+<style>
+	.alert-info , .alert-success, .alert-warning{
+		color:white;
+	}
+</style>
 <div class="container">
 	<div class="well span8 offset1">
 		<a href="<?=site_url("/")?>" ><h1>Facebook 廣告社團檢查器</h1></a>
