@@ -1,7 +1,7 @@
 <?php include("_site_header.php") ?>
 <div class="container">
 	<div class="well span8 offset1">
-		<a href="<?=site_url("/")?>" style="color:black;"><h1>Facebook 廣告社團檢查器</h1></a>
+		<a href="<?=site_url("/")?>" ><h1>Facebook 廣告社團檢查器</h1></a>
 		<p> 現在就檢查是否被惡意加入社團！ </p>
 		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
@@ -18,13 +18,13 @@
 		</p>
 		<div>
 			使用方法：請依照以下流程順序點擊按鈕：<Br />
-			<button class="js-start" >取得授權</button>  -&gt;
-			<button class="js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
-			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
-			<button class="js-end" disabled >取消授權並離開</button>
+			<button class="btn js-start" >取得授權</button>  -&gt;
+			<button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
+			<button class="btn js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
+			<button class="btn js-end" disabled >取消授權並離開</button>
 			<br />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button class="js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button>
+			<button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button>
 		</div>
 		<br />
 		<div>
