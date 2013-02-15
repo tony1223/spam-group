@@ -60,6 +60,18 @@ class Group extends MY_Controller {
 		);
 	}
 
+	public function confirming($type="web"){
+		$gids = $this->GroupModel->getConfirmingGIDs();
+
+		$this->load->view('group_list',
+			Array(
+				"pageTitle" => "審核中 Facebook 廣告社團列表",
+				"fbgids" => $gids,
+				"selector" => "group"
+			)
+		);
+	}
+
 	public function report(){
 		$gurl = $this->input->get("gurl");
 

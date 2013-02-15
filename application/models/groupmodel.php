@@ -42,4 +42,12 @@ class GroupModel extends CI_Model {
     	$items = $query->result();
     	return $items;
     }
+
+    function getConfirmingGIDs(){
+    	$this->db->select("GID,Name,CreateDate,ModifyDate");
+    	$this->db->where("Enabled",false);
+    	$query = $this->db->get("spamgroup");
+    	$items = $query->result();
+    	return $items;
+    }
 }
