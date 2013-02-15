@@ -2,7 +2,7 @@
 
 <div class="container">
 	<div class="well span8">
-		<h1>Facebook 廣告社團檢查器</h1>
+		<a href="<?=site_url("/")?>" style="color:black;"><h1>Facebook 廣告社團檢查器</h1></a>
 		<p> 現在就檢查是否被惡意加入社團！ </p>
 		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
