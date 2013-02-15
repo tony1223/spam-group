@@ -53,7 +53,7 @@ class Group extends MY_Controller {
 
 		$this->load->view('group_list',
 			Array(
-				"pageTitle" => "Facebook 廣告社團列表",
+				"pageTitle" => "已認定 Facebook 廣告社團列表",
 				"fbgids" => $gids,
 				"selector" => "group"
 			)
@@ -66,7 +66,7 @@ class Group extends MY_Controller {
 		$gids = $this->GroupModel->getGIDs();
 		$this->load->view('report',
 			Array(
-				"pageTitle" => "Facebook 回報廣告社團",
+				"pageTitle" => "回報 Facebook 廣告社團",
 				"fbgids" => $gids,
 				"selector" => "report",
 				"gurl" => $gurl
