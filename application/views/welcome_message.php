@@ -169,6 +169,7 @@
 			var friendlistReq = $.Deferred();
 			$("#friends-msg").html("注意：幫朋友檢查受限於 facebook API 只能檢查有加入公開廣告社團的朋友。<Br />實際感染率可能更高。<br />");
 			$("#friends-msg").append("取得朋友清單中...");
+			$("window,body").animate({scrollTop: $("#friends").position().top });
 			FB.api({
 			    method: 'fql.query',
 			    query: 'select name,uid from user where uid in (SELECT uid2 FROM friend WHERE uid1 = me())'
@@ -237,8 +238,14 @@
 					}
 					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + parseInt((effect_user_count / list.length) * 100,10) +"%"  );
 					$("#groups").text("累計加入社團數:"+effect_group_count);
-					$("#friends-msg").append("檢查第 "+ (index +1)+" 到 "+ (indexEnd) +" 位朋友");
-					$("#friends-msg").append("完成，已經過 "+ parseInt((new Date().getTime() - time_start.getTime() )/1000,10)+" 秒  <Br />");
+
+					function padding(num){
+						if(num < 10) return "&nbsp;&nbsp;&nbsp;&nbsp;"+num;
+						if(num < 100)return "&nbsp;&nbsp;"+num;
+						return num;
+					}
+					$("#friends-msg").append("檢查第 "+ padding(index +1)+" 到 "+ padding(indexEnd) +" 位朋友");
+					$("#friends-msg").append("完成，已經過 "+ parseInt((new Date().getTime() - time_start.getTime() )/1000,10)+" 秒。  <Br />");
 					if(indexEnd < list.length){
 						parseReq.resolve(indexEnd,true);
 					}else{
