@@ -23,7 +23,7 @@ class Group extends MY_Controller {
 	 */
 	public function index()
 	{
-		$gids = $this->GroupModel->getGIDs();
+		$gids = $this->getGids();
 		$this->load->view('welcome_message',
 			Array(
 				"pageTitle" => "Facebook 廣告社團檢查器",
@@ -33,8 +33,23 @@ class Group extends MY_Controller {
 		);
 	}
 
+	private function getGids(){
+		$this->load->driver('cache');
+		if (!$this->cache->file->is_supported()){
+			return $this->GroupModel->getGIDs();
+		}
+		$CACHE_ID = "Gids";
+		$data = $this->cache->file->get($CACHE_ID);
+		if($data != false){
+			return $data;
+		}
+		$result = $this->GroupModel->getGIDs();
+		$this->cache->file->save($CACHE_ID, $result, 300);
+ 		return $result;
+	}
+
 	public function groups($type="web"){
-		$gids = $this->GroupModel->getGIDs();
+		$gids = $this->getGids();
 
 		if($type == "json"){
 			echo json_encode($gids);
@@ -74,12 +89,9 @@ class Group extends MY_Controller {
 
 	public function report(){
 		$gurl = $this->input->get("gurl");
-
-		$gids = $this->GroupModel->getGIDs();
 		$this->load->view('report',
 			Array(
 				"pageTitle" => "回報 Facebook 廣告社團",
-				"fbgids" => $gids,
 				"selector" => "report",
 				"gurl" => $gurl
 			)

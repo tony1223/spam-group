@@ -228,8 +228,8 @@
   window.fbAsyncInit = function() {
     // init the FB JS SDK
     FB.init({
-      appId      : '135395566627129', // App ID from the App Dashboard
-      channelUrl : '//spam.tonyq.org/channel.html', // Channel File for x-domain communication
+      appId      : '<?=get_app_key()?>', // App ID from the App Dashboard
+      channelUrl : '//spamgroup.tonyq.org/channel.php', // Channel File for x-domain communication
       status     : true, // check the login status upon init?
       cookie     : true, // set sessions cookies to allow your server to access the session?
       xfbml      : true  // parse XFBML tags on this page?
