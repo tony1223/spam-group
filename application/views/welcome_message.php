@@ -21,7 +21,7 @@
 			<button class="js-start" >取得授權</button>  -&gt;
 			<button class="js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
 			<button class="js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
-			<button class="js-end" disabled >取消授權並結束</button>
+			<button class="js-end" disabled >取消授權並離開</button>
 			<br />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<button class="js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查(朋友多可能會花上好幾分鐘 )</button>
@@ -43,7 +43,7 @@
 		</div>
 		<div id="users">累計人數: 0</div>
 		<div id="groups">累計加入社團數: 0</div>
-		<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入社團名稱</td><td></td></tr> </table>
+		<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入的公開或共同社團名稱</td><td></td></tr> </table>
 		<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
 	</div>
 	<div class="span8 row">
@@ -74,7 +74,6 @@
 			    FB.api('/me', function(response) {
 
 				    if(response.name !== undefined){
-					       // console.log('Good to see you, ' + response.name + '.');
 					    $(".auth").text("已取得[ "+response.name+" ]授權").addClass("alert alert-success");
 					    $(".js-check-group,.js-end,.js-checkfriend-group").prop("disabled","");
 
@@ -147,6 +146,7 @@
 				 if(_gaq) {
 					 _gaq.push(['_trackEvent', 'Logout', "success",uid]);
 				 }
+				 self.location.reload();
 			});
 		});
 
@@ -166,7 +166,8 @@
 			}
 
 			var friendlistReq = $.Deferred();
-			$("#friends-msg").text("取得朋友清單中...");
+			$("#friends-msg").html("注意：幫朋友檢查受限於 facebook API 只能檢查有加入公開廣告社團的朋友。<Br />實際感染率可能更高。<br />");
+			$("#friends-msg").append("取得朋友清單中...");
 			FB.api({
 			    method: 'fql.query',
 			    query: 'select name,uid from user where uid in (SELECT uid2 FROM friend WHERE uid1 = me())'

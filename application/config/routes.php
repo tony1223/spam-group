@@ -38,11 +38,12 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "group";
 $route['404_override'] = '';
-$route["privacy"] = "welcome/privacy";
-$route["groups/(:any)"] = "welcome/groups/$1";
-$route["groups"] = "welcome/groups/$1";
+$route["privacy"] = "group/privacy";
+$route["groups/(:any)"] = "group/groups/$1";
+$route["groups"] = "group/groups/$1";
+$route["report"] = "group/report/$1";
 
 
 

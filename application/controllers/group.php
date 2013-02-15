@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class Group extends MY_Controller {
 	/**
 	 *
 	 * @var GroupModel
@@ -61,14 +61,72 @@ class Welcome extends MY_Controller {
 	}
 
 	public function report(){
+		$gurl = $this->input->get("gurl");
+
 		$gids = $this->GroupModel->getGIDs();
 		$this->load->view('report',
 			Array(
 				"pageTitle" => "Facebook 回報廣告社團",
 				"fbgids" => $gids,
-				"selector" => "report"
+				"selector" => "report",
+				"gurl" => $gurl
 			)
 		);
+	}
+
+	public function js_report_gid(){
+		$gid = $this->input->get("gid");
+		$group = $this->GroupModel->find_by_gid($gid);
+		echo json_encode($group);
+	}
+
+	public function js_report_group(){
+		$gid = $this->input->post("gid");
+		$name = $this->input->post("name");
+		$uid = $this->input->post("uid");
+		$uname = $this->input->post("uname");
+		$privacy = $this->input->post("privacy");
+
+		$groupid = $this->GroupModel->insert_report(
+			Array(
+				"Name" => $name ,
+				"GID" => $gid,
+				"Type" => $privacy,
+				"ReporterFBUID" => $uid,
+				"Reporter" => $uname
+		));
+
+		if($groupid == -1){
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增群組時發生意外錯誤" ));
+			return false;
+		}
+		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));
+	}
+	public function js_insert_group(){
+//		die('{"IsSuccess":true,"Data":119}');
+
+		$gid = $this->input->post("gid");
+		$name = $this->input->post("name");
+		$uid = $this->input->post("uid");
+		$uname = $this->input->post("uname");
+		$privacy = $this->input->post("privacy");
+
+		$groupid = $this->GroupModel->insert(
+			Array(
+				"Name" => $name ,
+				"GID" => $gid,
+				"Type" => $privacy,
+				"Enabled" => false,
+				"ReporterFBUID" => $uid,
+				"Reporter" => $uname
+		));
+
+		if($groupid == -1){
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增群組時發生意外錯誤" ));
+			return false;
+		}
+		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));
+		//ReporterFBUID
 	}
 
 	public function privacy(){
