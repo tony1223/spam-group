@@ -1,4 +1,4 @@
-<div class="span8 navbar" style="width:auto;">
+<div class="span8 navbar offset1" style="width:auto;">
   <div class="navbar-inner">
     <ul class="nav">
       <li <?php if($selector=="check") { ?> class="active" <?php }?>><a href="<?=site_url("/")?>">檢查</a></li>

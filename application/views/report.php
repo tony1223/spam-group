@@ -1,11 +1,11 @@
 <?php include("_site_header.php") ?>
 <div class="container">
-	<div class="well span8">
+	<div class="well span8 offset1">
 		<a href="<?=site_url("/")?>" style="color:black;"><h1>Facebook 廣告社團檢查器</h1></a>
 		<p> 現在就檢查是否被惡意加入社團！ </p>
 		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
-	<div class="well span8 row">
+	<div class="well span8 offset1">
 		<h2>回報新廣告社團</h2>
 		<div>
 			<form class="navbar-form" method="post" onsubmit="return false;" id="check-form">
@@ -28,7 +28,7 @@
 			註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。 <br />
 		</div>
 	</div>
-	<div class="groups span8 row well" id="groups" style="display:none;">
+	<div class="groups span8 offset1 well" id="groups" style="display:none;">
 		查詢紀錄
 		<table id="group-info" class="table" >
 			<tr>
@@ -39,7 +39,7 @@
 			</tr>
 		</table>
 	</div>
-	<div class="span8 row">
+	<div class="span8 offset1">
 		本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
 			若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
 			<br />

@@ -1,11 +1,11 @@
 <?php include("_site_header.php") ?>
 <div class="container">
-	<div class="well span8">
+	<div class="well span8 offset1">
 		<a href="<?=site_url("/")?>" style="color:black;"><h1>Facebook 廣告社團檢查器</h1></a>
 		<p> 現在就檢查是否被惡意加入社團！ </p>
 		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
-	<div class="well span8 row">
+	<div class="well span8 offset1">
 		<p>
 			請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
 			相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！<br />
@@ -36,7 +36,7 @@
 		<br />
 		<br />
 	</div>
-	<div class="friends span8 row well" id="friends" style="display:none;">
+	<div class="friends span8 offset1 well" id="friends" style="display:none;">
 		<div class="alert alert-info">
 			<div id="friends-msg">處理中...請稍後...</div>
 			<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
@@ -46,13 +46,13 @@
 		<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入的公開或共同社團名稱</td><td></td></tr> </table>
 		<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
 	</div>
-	<div class="span8 row">
+	<div class="span8 offset1">
 			註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
 			註二：本 App 只使用 "取得社團清單權限" 並不會作為任何其他用途，若有疑慮請勿使用。<br />
 			註三：如果剛取消社團，但在本系統查詢還在，這是正常的 、FB API 反應比較慢。<Br />
 			註四：我們使用的社團清單來源。<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">https://www.facebook.com/events/315380641913250/permalink/315383471912967/</a>
 	</div>
-	<div class="span8 row">
+	<div class="span8 offset1">
 		本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
 			若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
 			<br />
