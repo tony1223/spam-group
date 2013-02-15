@@ -152,6 +152,7 @@
 
 		$(".js-checkfriend-group").click(function(){
 			$(this).prop("disabled","disabled");
+			var time_start = new Date();
 			$(".loader").show();
 			$("#friends").show();
 			var gids = $(this).data("gids");
@@ -180,7 +181,7 @@
 			});
 
 			function parse(users,list,index){
-				var amount = 50;
+				var amount = 40;
 				var parseReq = $.Deferred();
 				var user_ids = [];
 				var indexEnd = index ;
@@ -237,7 +238,7 @@
 					}
 					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + parseInt((effect_user_count / list.length) * 100,10) +"%"  );
 					$("#groups").text("累計加入社團數:"+effect_group_count);
-					$("#friends-msg").append("完成 ("+ parseInt((indexEnd / list.length) *100,10)+"%) <Br />");
+					$("#friends-msg").append("完成 ("+ parseInt((indexEnd / list.length) *100,10)+"%)，已經過 "+ parseInt((new Date().getTime() - time_start.getTime() )/1000,10)+" 秒  <Br />");
 					if(indexEnd < list.length){
 						parseReq.resolve(indexEnd,true);
 					}else{
