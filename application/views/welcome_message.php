@@ -16,33 +16,64 @@
 			<div class="well">
 				<p>
 					請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
-					相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！<br />
-
-					<br />
+					相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！
+				</p>
+				<p>
 					不安全、<b>透過盜帳號惡意加入使用者</b>的購物社團可說是一種新型的網路蟑螂，
 					我們希望透過系統方式響應此一活動，讓使用者更方便檢查自己是否被惡意加入社團以方便退出社團，
 					或許你有朋友也在這些社團裡面，快分享給你的朋友吧！
-					<br /><br />
 				</p>
 				<div>
-					使用方法：請依照以下流程順序點擊按鈕：<Br />
-					<button class="btn js-start" >取得授權</button>  -&gt;
-					<button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
-					<button class="btn js-cancel-group" disabled> 退出社團（FB 不支援自動退出，請手動退出）</button> -&gt;
-					<button class="btn js-end" disabled >取消授權並離開</button>
-					<br />
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					-&gt; <button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button>
+					<h4>開始檢查</h4>
+					<p>依照以下流程順序點擊按鈕：</p>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>步驟</th>
+								<th>執行結果</th>
+							</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<th>0.</th>
+							<td><button class="btn js-start" >取得授權</button></td>
+							<td>
+								<div class="auth">尚未授權</div>
+							</td>
+						</tr>
+						<tr>
+							<th>1.</th>
+							<td><button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button></td>
+							<td>
+								<div class="check-group"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>2.</th>
+							<td><button class="btn js-cancel-group" disabled> 退出社團</button></td>
+							<td>*FB 不支援自動退出，請手動退出</td>
+						</tr>
+						<tr>
+							<th>3.</th>
+							<td><button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button></td>
+							<td>
+								見下方結果
+							</td>
+						</tr>
+						<tr>
+							<th>4.</th>
+							<td><button class="btn js-end" disabled >取消授權並離開</button></td>
+							<td>
+								<div class="auth">尚未授權</div>
+
+							</td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
-				<br />
-				<div>
-					目前狀態：<br />
-					<div class="auth">尚未授權</div>
-					<div class="check-group"></div>
-				</div>
-				<br />
-				<br />
-				<br />
+
 			</div>
 			<div class="friends well" id="friends" style="display:none;">
 				<div class="alert alert-info">
