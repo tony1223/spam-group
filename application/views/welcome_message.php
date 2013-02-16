@@ -64,7 +64,7 @@
 						</tr>
 						<tr>
 							<th>4.</th>
-							<td><button class="btn js-end" disabled >取消授權並離開</button></td>
+							<td><button class="btn js-end" disabled >取消授權並清空查詢</button></td>
 							<td>
 							</td>
 						</tr>
