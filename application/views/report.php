@@ -1,33 +1,52 @@
 <?php include("_site_header.php") ?>
 <div class="container">
-	<div class="well span8 offset1">
-		<a href="<?=site_url("/")?>"  ><h1>Facebook 廣告社團檢查器</h1></a>
-		<p> 現在就檢查是否被惡意加入社團！ </p>
-		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
-	</div>
-	<div class="well span8 offset1">
-		<h2>回報新廣告社團</h2>
-		<div>
-			<form class="navbar-form" method="post" onsubmit="return false;" id="check-form">
-				請貼上要回報的廣告社團網址<Br />
-				<input type="text" class="span6" id="group" value="<?=htmlspecialchars($gurl)?>">
-				<button type="button" id="check" class="btn js-start" disabled>FB api 載入中</button>
-			</form>
-			範例：
-			<ul>
-				<li>
-					https://www.facebook.com/groups/z369w/
-				</li>
-				<li>
-					http://www.facebook.com/groups/279611548826087/
-				</li>
-			</ul>
-			<div id="msg" class="alert" style="display:none;"></div>
-			<button type="button" id="check" class="btn js-end" disabled="disabled">取消授權並離開</button>
-			<br />
-			註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。 <br />
+	<div class="row">
+		<div class="span8 offset2">
+
+			<div class="well">
+				<a href="<?=site_url("/")?>"  ><h1>Facebook 廣告社團檢查器</h1></a>
+				<p> 現在就檢查是否被惡意加入社團！ </p>
+				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
+			</div>
+			<div class="well">
+				<h2>回報新廣告社團</h2>
+				<div>
+					<form class="navbar-form" method="post" onsubmit="return false;" id="check-form">
+						請貼上要回報的廣告社團網址<Br />
+						<input type="text" class="span6" id="group" value="<?=htmlspecialchars($gurl)?>">
+						<button type="button" id="check" class="btn js-start" disabled>FB api 載入中</button>
+					</form>
+					範例：
+					<ul>
+						<li>
+							https://www.facebook.com/groups/z369w/
+						</li>
+						<li>
+							http://www.facebook.com/groups/279611548826087/
+						</li>
+					</ul>
+					<div id="msg" class="alert" style="display:none;"></div>
+					<button type="button" id="check" class="btn js-end" disabled="disabled">取消授權並離開</button>
+					<br />
+					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。 <br />
+				</div>
+			</div>
+			<div class="groups well" id="groups" style="display:none;">
+				查詢紀錄
+				<table class="table" >
+					<tr>
+						<td>社團編號(gid)</td>
+						<td>社團名稱</td>
+						<td>狀態</td>
+						<td>檢舉情形</td>
+					</tr>
+					<tbody id="group-info"></tbody>
+				</table>
+			</div>
+			<?php include("_content_nav.php");?>
 		</div>
 	</div>
+
 	<div class="groups span8 offset1 well" id="groups" style="display:none;">
 		查詢紀錄
 		<table class="table" >
