@@ -59,13 +59,7 @@
 			<tbody id="group-info"></tbody>
 		</table>
 	</div>
-	<div class="span8 offset1">
-		本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
-			若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
-			<br />
-			<br />
-	</div>
-	<?php include("_content_nav.php");?>
+
 </div>
 
 <div id="fb-root"></div>
