@@ -10,12 +10,18 @@
 
 		審查中社團清單
 		<table class="table">
-			<tr><td>Group ID</td><td>名字</td><td>加入時間</td></tr>
+			<tr>
+				<td>Group ID</td>
+				<td>名字</td>
+				<td>回報時間</td>
+				<td>+1 數量</td>
+			</tr>
 			<?php foreach($fbgids as $group){ ?>
 				<tr>
 					<td><?=$group->GID?></td>
 					<td><a href="https://www.facebook.com/groups/<?=htmlspecialchars($group->GID)?>" target="_blank"><?=htmlspecialchars($group->Name)?></a></td>
 					<td><?=$group->CreateDate?></td>
+					<td><?=$group->RequestCount?></td>
 					<?php if( isset($_SESSION["admin"])  ){?>
 					<td> <a class="btn js-confirmed"  href="javascript:void 0;" data-gid="<?=htmlspecialchars($group->GID)?>">通過</a>  </td>
 					<?php }?>
