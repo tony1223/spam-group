@@ -38,8 +38,9 @@
 						<tbody>
 						<tr>
 							<th>0.</th>
-							<td><button class="btn js-start" >取得授權</button></td>
+							<td><button class="btn js-start" >取得授權</button> </td>
 							<td>
+								<a href="https://www.facebook.com/notes/%E7%8E%8B%E6%99%AF%E5%BC%98/%E5%8F%96%E5%BE%97-fb-%E6%8E%88%E6%AC%8A-vs-%E8%A2%AB%E7%9B%9C%E5%B8%B3%E8%99%9F/10151279743676709" target="_blank">(什麼是授權，我會因此被盜帳號嗎？ 本 App 開發者說明。)</a>
 								<div class="auth">尚未授權</div>
 							</td>
 						</tr>
