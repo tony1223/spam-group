@@ -5,65 +5,67 @@
 	}
 </style>
 <div class="container">
-	<div class="well span8 offset1">
-		<a href="<?=site_url("/")?>" ><h1>Facebook 廣告社團檢查器</h1></a>
-		<p> 現在就檢查是否被惡意加入社團！ </p>
-		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
-	</div>
-	<div class="well span8 offset1">
-		<p>
-			請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
-			相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！<br />
+	<div class="row">
+		<div class="span8 offset2">
 
-			<br />
-			不安全、<b>透過盜帳號惡意加入使用者</b>的購物社團可說是一種新型的網路蟑螂，
-			我們希望透過系統方式響應此一活動，讓使用者更方便檢查自己是否被惡意加入社團以方便退出社團，
-			或許你有朋友也在這些社團裡面，快分享給你的朋友吧！
-			<br /><br />
-		</p>
-		<div>
-			使用方法：請依照以下流程順序點擊按鈕：<Br />
-			<button class="btn js-start" >取得授權</button>  -&gt;
-			<button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
-			<button class="btn js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
-			<button class="btn js-end" disabled >取消授權並離開</button>
-			<br />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button>
+			<div class="well">
+				<a href="<?=site_url("/")?>" ><h1>Facebook 廣告社團檢查器</h1></a>
+				<p> 現在就檢查是否被惡意加入社團！ </p>
+				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
+			</div>
+			<div class="well">
+				<p>
+					請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
+					相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！<br />
+
+					<br />
+					不安全、<b>透過盜帳號惡意加入使用者</b>的購物社團可說是一種新型的網路蟑螂，
+					我們希望透過系統方式響應此一活動，讓使用者更方便檢查自己是否被惡意加入社團以方便退出社團，
+					或許你有朋友也在這些社團裡面，快分享給你的朋友吧！
+					<br /><br />
+				</p>
+				<div>
+					使用方法：請依照以下流程順序點擊按鈕：<Br />
+					<button class="btn js-start" >取得授權</button>  -&gt;
+					<button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button> -&gt;
+					<button class="btn js-cancel-group" disabled> 退出社團（FB 尚不支援自動退出，請先手動退出）</button> -&gt;
+					<button class="btn js-end" disabled >取消授權並離開</button>
+					<br />
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button>
+				</div>
+				<br />
+				<div>
+					目前狀態：<br />
+					<div class="auth">尚未授權</div>
+					<div class="check-group"></div>
+				</div>
+				<br />
+				<br />
+				<br />
+			</div>
+			<div class="friends well" id="friends" style="display:none;">
+				<div class="alert alert-info">
+					<div id="friends-msg">處理中...請稍後...</div>
+					<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
+				</div>
+				<div id="users">累計人數: 0</div>
+				<div id="groups">累計加入社團數: 0</div>
+				<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入的公開或共同社團名稱</td><td></td></tr> </table>
+				<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
+			</div>
+			<div>
+					註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
+					註二：本 App 只使用 "取得社團清單權限" 並不會作為任何其他用途，若有疑慮請勿使用。<br />
+					註三：如果剛取消社團，但在本系統查詢還在，這是正常的 、FB API 反應比較慢。<Br />
+					註四：我們使用的社團清單來源。<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">https://www.facebook.com/events/315380641913250/permalink/315383471912967/</a>
+			</div>
+
+
+		<?php include("_content_nav.php");?>
 		</div>
-		<br />
-		<div>
-			目前狀態：<br />
-			<div class="auth">尚未授權</div>
-			<div class="check-group"></div>
-		</div>
-		<br />
-		<br />
-		<br />
 	</div>
-	<div class="friends span8 offset1 well" id="friends" style="display:none;">
-		<div class="alert alert-info">
-			<div id="friends-msg">處理中...請稍後...</div>
-			<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
-		</div>
-		<div id="users">累計人數: 0</div>
-		<div id="groups">累計加入社團數: 0</div>
-		<table id="friends-list" class="table"><tr><td>朋友名稱</td><td>被加入的公開或共同社團名稱</td><td></td></tr> </table>
-		<img class="loader" src="http://cdn.jsdelivr.net/wp-advanced-ajax-page-loader/2.5.12/loaders/Facebook%20Like%20Loader.gif" />
-	</div>
-	<div class="span8 offset1">
-			註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
-			註二：本 App 只使用 "取得社團清單權限" 並不會作為任何其他用途，若有疑慮請勿使用。<br />
-			註三：如果剛取消社團，但在本系統查詢還在，這是正常的 、FB API 反應比較慢。<Br />
-			註四：我們使用的社團清單來源。<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">https://www.facebook.com/events/315380641913250/permalink/315383471912967/</a>
-	</div>
-	<div class="span8 offset1">
-		本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
-			若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
-			<br />
-			<br />
-	</div>
-	<?php include("_content_nav.php");?>
+
 </div>
 
 <div id="fb-root"></div>
