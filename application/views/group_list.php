@@ -7,7 +7,8 @@
 		<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 	</div>
 	<div class="well span8 offset1">
-		社團清單(其他格式 <a href="<?=site_url("/groups/json/")?>">JSON</a> 、 <a href="<?=site_url("/groups/jsonp/?jsonp=parser")?>">JSONP</a> 板
+		社團清單(其他格式 <a href="<?=site_url("/groups/json/")?>">JSON</a> 、 <a href="<?=site_url("/groups/jsonp/?jsonp=parser")?>">JSONP</a> ），總數 <?=count($fbgids)?>個。
+
 		<table class="table">
 			<tr><td>Group ID</td><td>名字</td><td>加入時間</td></tr>
 			<?php foreach($fbgids as $group){ ?>

@@ -44,7 +44,7 @@ class Group extends MY_Controller {
 			return $data;
 		}
 		$result = $this->GroupModel->getGIDs();
-		$this->cache->file->save($CACHE_ID, $result, 300);
+		$this->cache->file->save($CACHE_ID, $result, 600);
  		return $result;
 	}
 

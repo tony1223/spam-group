@@ -241,7 +241,14 @@
 						$("#friends-list").append(out.join(""));
 
 					}
-					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + parseInt((effect_user_count / list.length) * 100,10) +"%"  );
+					var percent = parseInt((effect_user_count / list.length) * 100,10);
+
+					$("#users").text("累計人數:"+effect_user_count +"/"+ list.length +", 感染率:" + percent +"%"  );
+					if(percent >= 50){
+						$("#users,#groups").addClass("alert alert-error");
+					}else if(percent > 0){
+						$("#users,#groups").addClass("alert alert-warning");
+					}
 					$("#groups").text("累計加入社團數:"+effect_group_count);
 
 					function padding(num){
