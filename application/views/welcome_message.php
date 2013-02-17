@@ -3,6 +3,9 @@
 	.alert-info , .alert-success, .alert-warning{
 		color:white;
 	}
+	.step {
+		width:8em;
+	}
 </style>
 <div class="container">
 	<div class="row">
@@ -31,7 +34,7 @@
 						<thead>
 							<tr>
 								<th></th>
-								<th>步驟</th>
+								<th class="step">步驟</th>
 								<th>執行結果</th>
 							</tr>
 						</thead>
@@ -65,9 +68,10 @@
 						</tr>
 						<tr>
 							<th>4.</th>
-							<td><button class="btn js-end" disabled >取消授權並清空查詢</button></td>
-							<td>
+							<td colspan="2">
+								<button class="btn js-end" disabled >取消授權並清空查詢</button>
 							</td>
+
 						</tr>
 						</tbody>
 					</table>
