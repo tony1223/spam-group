@@ -16,7 +16,8 @@
 						<input type="text" class="span6" id="group" value="<?=htmlspecialchars($gurl)?>">
 						<button type="button" id="check" class="btn js-start" disabled>FB api 載入中</button>
 					</form>
-					範例：
+					<br>
+					網址範例：
 					<ul>
 						<li>
 							https://www.facebook.com/groups/z369w/
@@ -25,10 +26,11 @@
 							http://www.facebook.com/groups/279611548826087/
 						</li>
 					</ul>
+					<p>
+					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。
+					</p>
 					<div id="msg" class="alert" style="display:none;"></div>
-					<button type="button" id="check" class="btn js-end" disabled="disabled">取消授權並離開</button>
-					<br />
-					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。 <br />
+					<button type="button" id="check" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
 				</div>
 			</div>
 			<div class="groups well" id="groups" style="display:none;">
@@ -45,19 +47,6 @@
 			</div>
 			<?php include("_content_nav.php");?>
 		</div>
-	</div>
-
-	<div class="groups span8 offset1 well" id="groups" style="display:none;">
-		查詢紀錄
-		<table class="table" >
-			<tr>
-				<td>社團編號(gid)</td>
-				<td>社團名稱</td>
-				<td>狀態</td>
-				<td>檢舉情形</td>
-			</tr>
-			<tbody id="group-info"></tbody>
-		</table>
 	</div>
 
 </div>
