@@ -15,7 +15,7 @@
 					<?php foreach($fbgids as $group){ ?>
 						<tr>
 							<td><?=$group->GID?></td>
-							<td><a href="https://www.facebook.com/groups/<?=htmlspecialchars($group->GID)?>/members/" target="_blank"><?=htmlspecialchars($group->Name)?></a></td>
+							<td><a href="https://www.facebook.com/groups/<?=htmlspecialchars($group->GID)?>/members/?order=date" target="_blank"><?=htmlspecialchars($group->Name)?></a></td>
 							<td><?=$group->CreateDate?></td>
 							<td><?=$group->RequestCount?></td>
 							<?php if( isset($_SESSION["admin"])  ){?>
