@@ -9,6 +9,9 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
+				<button class="js-admin-auth btn">登入管理員（Tony Wang 限定）</button>
+				<br />
+				<br />
 				審查中社團清單 (總數<?=count($fbgids)?>)
 				<table class="table">
 					<tr><td>Group ID</td><td>名字</td><td>加入時間</td><Td>+1數量</Td></tr>
@@ -24,7 +27,6 @@
 						</tr>
 					<?php } ?>
 				</table>
-				<button class="js-admin-auth btn">登入管理員（Tony Wang 限定）</button>
 			</div>
 			<div>
 					註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
