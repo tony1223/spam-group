@@ -92,7 +92,9 @@ class Group extends MY_Controller {
 			$token = $this->input->get("access_token");
 			$items = $this->get("https://graph.facebook.com/me?access_token=".($token));
 			$obj = json_decode($items);
-			if(@$obj->id == "1403951219"){
+
+			$admins = $this->config->item('admins');
+			if(@isset($admins[$obj->id])){
 				$_SESSION["admin"] = $obj->id;
 				echo json_encode(Array("IsSuccess" => true));
 			}else{
@@ -113,7 +115,7 @@ class Group extends MY_Controller {
 
 		$gid = $this->input->post("gid");
 
-		$groupid = $this->GroupModel->confirm($gid);
+		$groupid = $this->GroupModel->confirm($gid,$_SESSION["admin"]);
 		echo json_encode(Array("IsSuccess" => true));
 	}
 

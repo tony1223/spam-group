@@ -5,9 +5,9 @@ class GroupModel extends CI_Model {
         parent::__construct();
     }
 
-    function confirm($gid){
+    function confirm($gid,$confirmerUID){
     	$this->db->where("GID" , $gid);
-    	$this->db->update("spamgroup",Array("Enabled" => true, "ModifyDate" => db_current_date()));
+    	$this->db->update("spamgroup",Array("Enabled" => true, "ModifyDate" => db_current_date(),"ConfirmerFBUID"=>$confirmerUID));
     }
 
     function find_by_gid($gid){

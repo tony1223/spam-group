@@ -1,6 +1,6 @@
       <div>
         <br />
-        <p>本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>，
+        <p>本系統作者為 <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a>( Software Architect of <a href="http://5945.tw" target="_blank">5945.tw </a>)，
           若使用上有任何疑問或建議，歡迎與我聯繫。 (tonylovejava[at]gmail.com)
         </p>
         <br />
