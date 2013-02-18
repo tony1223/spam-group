@@ -92,7 +92,8 @@
 					註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
 					註二：本 App 只使用 "取得社團清單權限" 並不會作為任何其他用途，若有疑慮請勿使用。<br />
 					註三：如果剛取消社團，但在本系統查詢還在，這是正常的 、FB API 反應比較慢。<Br />
-					註四：我們使用的社團清單來源。<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">https://www.facebook.com/events/315380641913250/permalink/315383471912967/</a>
+					註四：我們使用的主要社團清單來源：<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">抵制盜帳號加人的網拍社團活動</a> 及網友檢舉後經  <a target="_blank"  href="https://www.facebook.com/tonylovejava">TonyQ</a> 審核通過者。<br />
+
 			</div>
 
 
