@@ -164,7 +164,7 @@
 					$(".check-group").append("恭喜你，沒有加入任何已知惡意廣告社團<br /><br /> "+
 							" ＠預防重於治療，為保護您的帳號安全推薦您參考這篇文章 <Br />"+
 							" <a href='http://www.soft4fun.net/tips/3%E6%AD%A5%E9%98%B2%E5%A0%B5-facebook-%E5%B8%B3%E8%99%9F%E8%A2%AB%E7%9B%9C%E7%94%A8.htm' target='_blank'>3步防堵 Facebook 帳號被盜用，所有 Facebook 使用者必看！</a> "+
-							"<br /><br /> ＠工具僅供參考，對自己社團詳細體檢才是王道! <Br /> 請參考 <a target='_blank' href='http://playpcesor.blogspot.com/2013/02/facebook.html'>更快速兩步驟退出 Facebook 廣告社團與無用社團的方法</a>");
+							"<br /><br /> ＠工具僅供參考，對自己社團詳細體檢才是王道! <Br /> 請參考 <a target='_blank' href='http://playpcesor.blogspot.com/2013/02/facebook.html'>更快速兩步驟退出 Facebook 廣告社團與無用社團的方法</a><br /><a target='_blank' href='https://www.facebook.com/bookmarks/groups'>所有你已加入的社團清單一覽表</a>");
 					if(_gaq){
 						_gaq.push(['_trackEvent', 'Group', "not_found"]);
 					}
@@ -179,7 +179,7 @@
 				});
 				$(".check-group").html(found.join("")+
 						"<br /> ＠預防重於治療，為保護您的帳號安全推薦您參考這篇文章 <Br />  <a href='http://www.soft4fun.net/tips/3%E6%AD%A5%E9%98%B2%E5%A0%B5-facebook-%E5%B8%B3%E8%99%9F%E8%A2%AB%E7%9B%9C%E7%94%A8.htm' target='_blank'>3步防堵 Facebook 帳號被盜用，所有 Facebook 使用者必看！</a>"+
-						"<br /><br /> ＠工具僅供參考，對自己社團詳細體檢才是王道! <Br /> 請參考 <a target='_blank' href='http://playpcesor.blogspot.com/2013/02/facebook.html'>更快速兩步驟退出 Facebook 廣告社團與無用社團的方法</a>");
+						"<br /><br /> ＠工具僅供參考，對自己社團詳細體檢才是王道! <Br /> 請參考 <a target='_blank' href='http://playpcesor.blogspot.com/2013/02/facebook.html'>更快速兩步驟退出 Facebook 廣告社團與無用社團的方法</a><br /><a  target='_blank' href='https://www.facebook.com/bookmarks/groups'>所有你已加入的社團清單一覽表</a>");
 				if(_gaq){
 					_gaq.push(['_trackEvent', 'Group', "found",uid+"::"+group_label.join("")]);
 				}
