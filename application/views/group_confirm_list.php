@@ -9,7 +9,7 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
-				審查中社團清單
+				審查中社團清單 (總數<?=count($fbgids)?>)
 				<table class="table">
 					<tr><td>Group ID</td><td>名字</td><td>加入時間</td><Td>+1數量</Td></tr>
 					<?php foreach($fbgids as $group){ ?>
