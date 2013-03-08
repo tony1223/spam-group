@@ -10,6 +10,7 @@
 		}
 	?></title>
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap.min.css")?>">
+    <link REL="SHORTCUT ICON" HREF="http://yoursitedotcom.here/yourdir/favicon.ico">
     <link rel="stylesheet" href="<?=base_url("/css/bootstrap-responsive.min.css")?>">
 </head>
 <body>
