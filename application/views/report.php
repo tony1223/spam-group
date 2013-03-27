@@ -9,7 +9,7 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
-		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-confirm_date="<?=$confirm_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
+		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-group_count="<?=$group_count?>" data-confirm_date="<?=$confirm_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
 			</div>
 			<div class="well">
 				<h2>回報新廣告社團</h2>
@@ -239,7 +239,8 @@
 $(function () {
 	var chart,
 		info = $("#chart").data("info"),
-		avg_date = $("#chart").data("confirm_date");
+		avg_date = $("#chart").data("confirm_date"),
+		group_count = $("#chart").data("group_count");
 
 	var series = [];
 
@@ -284,7 +285,7 @@ $(function () {
 			x: -20 //center
 		},
 		subtitle: {
-			text: '平均審核日數 '+avg_date+' 天',
+			text: '平均審核日數 '+avg_date+' 天，總社團 ' + group_count+' 個',
 			x: -20
 		},
 		xAxis: {
@@ -315,17 +316,8 @@ $(function () {
 		},
 		tooltip: {
 			formatter: function() {
-				if(this.x == "2013/02/09" || this.x == "2013/02/10" ||
-					this.x == "2013/02/13" || this.x == "2013/02/14" ||
-					this.x == "2013/02/15" || this.x == "2013/02/16" ||
-					this.x == "2013/02/17" || this.x == "2013/02/10" ){
-					return '<b>'+ this.series.name +'</b>(創站期間匯入資料)<br/>'+
-					this.x +': '+ this.y +'張';
-				}else{
-					return '<b>'+ this.series.name +'</b><br/>'+
-					this.x +': '+ this.y +'張';
-				}
-
+				return '<b>'+ this.series.name +'</b><br/>'+
+					this.x +': '+ this.y +'個';
 			}
 		},
 		legend: {

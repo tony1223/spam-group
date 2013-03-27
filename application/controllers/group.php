@@ -176,7 +176,8 @@ class Group extends MY_Controller {
 				"selector" => "report",
 				"gurl" => $gurl,
 				"chart_data" => $stat_infos["chart_data"],
-				"confirm_avg_date" => $stat_infos["confirm_avg_date"]
+				"confirm_avg_date" => $stat_infos["confirm_avg_date"],
+				"group_count" => count($this->getGids())
 			)
 		);
 	}
