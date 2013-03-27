@@ -9,6 +9,9 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
+		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-confirm_date="<?=$confirm_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
+			</div>
+			<div class="well">
 				<h2>回報新廣告社團</h2>
 				<div>
 					<form class="navbar-form" method="post" onsubmit="return false;" id="check-form">
@@ -52,6 +55,8 @@
 </div>
 
 <div id="fb-root"></div>
+
+<!-- 檢查相關 -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>
 	var escapeHTML = (function () {
@@ -226,6 +231,117 @@
 		$("#check").text("取得授權後檢查").prop("disabled","");
 	}
 </script>
+
+
+<!-- Chart info -->
+<script src="<?=base_url("js/highcharts.js")?>" ></script>
+<script>
+$(function () {
+	var chart,
+		info = $("#chart").data("info"),
+		avg_date = $("#chart").data("confirm_date");
+
+	var series = [];
+
+	var columns = [], colobj ={}, infoObj = {};
+	for(var key in info){
+		infoObj[key] = infoObj[key] ||{};
+		for(var i = 0 ,len = info[key].length; i < len ; ++i){
+			if (colobj[info[key][i].report_date] == null){
+				columns.push(info[key][i].report_date);
+				colobj[info[key][i].report_date] = 1;
+			}
+			infoObj[key][info[key][i].report_date] = info[key][i];
+		}
+	}
+	columns.sort(function(obj1,obj2){
+		return new Date(obj1) > new Date(obj2);
+	});
+	for(var key in info){
+		var values = [];
+		for(var i = 0 ,len = columns.length; i < len ; ++i){
+			if (infoObj[key][columns[i]]){
+				values.push(parseInt(infoObj[key][columns[i]].group_count,10));
+			}else{
+				values.push(0);
+			}
+		}
+		series.push({
+			name: key,
+			data: values
+		});
+	}
+
+	chart = new Highcharts.Chart({
+		chart: {
+			renderTo: 'chart',
+			type: 'line',
+			marginRight: 130,
+			marginBottom: 25
+		},
+		title: {
+			text: '廣告社團回報情形與審核通過情形一覽 ',
+			x: -20 //center
+		},
+		subtitle: {
+			text: '平均審核日數 '+avg_date+' 天',
+			x: -20
+		},
+		xAxis: {
+			categories: columns,
+			labels: {
+				rotation: -60,
+				formatter:function(){
+					if(/01$/.test(this.value)){
+							return this.value.substring(5);
+					}else{
+						//return this.value.substring(5);
+					}
+				},
+				style: {
+					height:"100px"
+				}
+			}
+		},
+		yAxis: {
+			title: {
+				text: '社團數'
+			},
+			plotLines: [{
+				value: 0,
+				width: 1,
+				color: '#808080'
+			}]
+		},
+		tooltip: {
+			formatter: function() {
+				if(this.x == "2013/02/09" || this.x == "2013/02/10" ||
+					this.x == "2013/02/13" || this.x == "2013/02/14" ||
+					this.x == "2013/02/15" || this.x == "2013/02/16" ||
+					this.x == "2013/02/17" || this.x == "2013/02/10" ){
+					return '<b>'+ this.series.name +'</b>(創站期間匯入資料)<br/>'+
+					this.x +': '+ this.y +'張';
+				}else{
+					return '<b>'+ this.series.name +'</b><br/>'+
+					this.x +': '+ this.y +'張';
+				}
+
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'top',
+			x: -10,
+			y: 100,
+			borderWidth: 0
+		},
+		series: series
+	});
+
+});
+</script>
+
 <script>
   window.fbAsyncInit = function() {
     // init the FB JS SDK

@@ -146,7 +146,12 @@ class Group extends MY_Controller {
 			Array(
 				"pageTitle" => "回報 Facebook 廣告社團",
 				"selector" => "report",
-				"gurl" => $gurl
+				"gurl" => $gurl,
+				"chart_data" =>
+					Array(
+						"全部" => $this->GroupModel->stat_day(),
+						"審核通過" => $this->GroupModel->stat_day_enabled()),
+				"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
 			)
 		);
 	}
