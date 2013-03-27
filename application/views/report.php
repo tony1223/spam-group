@@ -151,7 +151,7 @@
 					out.push("<td>"+escapeHTML(group.name)+"</td>");
 					out.push("<td>"+escapeHTML(PRIVACYS[group.privacy])+"</td>");
 					if(server_info == null){
-						out.push("<td class='status-"+group.gid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report btn' data-group='"+escapeHTML(JSON.stringify(group))+"'>馬上檢舉</a></td>");
+						out.push("<td class='status-"+group.gid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report btn' data-group='"+escapeHTML(group.gid)+"'>馬上檢舉</a></td>");
 					}else if(server_info.Enabled == "1"){
 						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告社團清單</td>");
 					}else{
