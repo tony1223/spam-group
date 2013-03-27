@@ -58,7 +58,7 @@ class GroupModel extends CI_Model {
 
 	function stat_day(){
 		$query = $this->db->query("SELECT DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) AS report_date, ".
-			" COUNT( GroupID ) AS group_count FROM  `spamgroup` ".
+			" COUNT( GroupID ) AS group_count FROM  `spamgroup` where CreateDate > '2013/2/18' ".
 			" GROUP BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ".
 			" ORDER BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ASC");
 		$items = $query->result();
@@ -67,7 +67,7 @@ class GroupModel extends CI_Model {
 
 	function stat_day_enabled(){
 		$query = $this->db->query("SELECT DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) AS report_date, ".
-			" COUNT( GroupID ) AS group_count FROM  `spamgroup` where Enabled = 1 ".
+			" COUNT( GroupID ) AS group_count FROM  `spamgroup` where Enabled = 1 and  CreateDate > '2013/2/18'".
 			" GROUP BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ".
 			" ORDER BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ASC");
 		$items = $query->result();
