@@ -67,6 +67,7 @@
 	    };
 	}());
 	var PRIVACYS = { "CLOSED":"不公開","SECRET":"秘密","OPEN":"公開" };
+	var groups = {};
 	function fb_init(){
 		var uid = null , uname = null;
 		$(".js-start").on("click.auth",function(){
@@ -154,9 +155,9 @@
 					}else if(server_info.Enabled == "1"){
 						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告社團清單</td>");
 					}else{
-						out.push("<td class='status-"+group.gid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-again btn' data-group='"+escapeHTML(JSON.stringify(group))+"'>檢舉 +1 </a></td>");
+						out.push("<td class='status-"+group.gid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-again btn' data-group='"+escapeHTML(group.gid)+"'>檢舉 +1 </a></td>");
 					}
-
+					groups[group.gid]= group;
 					out.push("</tr>");
 					$("#group-info").prepend(out.join(""));
 				});
@@ -186,7 +187,8 @@
 		});
 
 		$("#groups").on("click",".js-report",function(){
-			var group = $(this).data("group");
+			var groupid = $(this).data("group"),
+				group = groups[groupid];
 			if(group == null){
 				alert("未知的例外情形，group 不存在。");
 				return false;
@@ -207,7 +209,8 @@
 			});
 		});
 		$("#groups").on("click",".js-report-again",function(){
-			var group = $(this).data("group");
+			var groupid = $(this).data("group"),
+			group = groups[groupid];
 			if(group == null){
 				alert("未知的例外情形，group 不存在。");
 				return false;
