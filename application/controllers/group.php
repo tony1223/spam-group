@@ -33,6 +33,32 @@ class Group extends MY_Controller {
 		);
 	}
 
+	private function get_stat_infos(){
+		$this->load->driver('cache');
+		if (!$this->cache->file->is_supported()){
+			return
+				Array(
+					"chart_data" =>Array(
+						"全部" => $this->GroupModel->stat_day(),
+						"審核通過" => $this->GroupModel->stat_day_enabled()),
+					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
+				);
+		}
+		$CACHE_ID = "chart_infos";
+		$data = $this->cache->file->get($CACHE_ID);
+		if($data != false){
+			return $data;
+		}
+		$result =Array(
+					"chart_data" =>Array(
+						"全部" => $this->GroupModel->stat_day(),
+						"審核通過" => $this->GroupModel->stat_day_enabled()),
+					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
+		);
+		$this->cache->file->save($CACHE_ID, $result, 600);
+ 		return $result;
+	}
+
 	private function getGids(){
 		$this->load->driver('cache');
 		if (!$this->cache->file->is_supported()){
@@ -142,16 +168,15 @@ class Group extends MY_Controller {
 
 	public function report(){
 		$gurl = $this->input->get("gurl");
+
+		$stat_infos = $this->get_stat_infos();
 		$this->load->view('report',
 			Array(
 				"pageTitle" => "回報 Facebook 廣告社團",
 				"selector" => "report",
 				"gurl" => $gurl,
-				"chart_data" =>
-					Array(
-						"全部" => $this->GroupModel->stat_day(),
-						"審核通過" => $this->GroupModel->stat_day_enabled()),
-				"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
+				"chart_data" => $stat_infos["chart_data"],
+				"confirm_avg_date" => $stat_infos["confirm_avg_date"]
 			)
 		);
 	}
