@@ -208,7 +208,7 @@
 			var effect_user_count = 0, effect_group_count = 0;
 			if(gids){
 				for(var i = 0; i < gids.length;i++){
-					groups[gids[i].GID] = gids[i].Name;
+					groups[gids[i].GID] = gids[i];
 					rule_gid.push("'"+gids[i].GID+"'");
 				}
 			}
@@ -237,36 +237,39 @@
 					user_ids.push("'"+list[i].uid+"'");
 				}
 				FB.api({method:"fql.query",
-						query:"select uid,gid from group_member where gid in ("+rule_gid.join(",")+") and uid in ("+user_ids.join(",")+") order by uid desc "},
+						query:"select uid,gid from group_member where uid in ("+user_ids.join(",")+") order by uid desc "},
 						function(response){
 					if(response.length >0 ){
 						var out = [];
 						var last_uid = null,
 							last_groups = [];;
-
 						for(var i = 0 ; i < response.length;++i){
-							if(last_uid == null){
-								last_uid = response[i].uid;
-								last_groups = [response[i].gid];
-								effect_user_count++;
-								effect_group_count++;
-							}else if(last_uid != response[i].uid){
-								effect_user_count++;
-								if(last_groups.length){
-									out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
-									var group_names = [];
-									$.each(last_groups,function(ind,item){
-										out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
-										group_names.push(groups[item]);
-									});
-									out.push("<td><a class='btn js-msg' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"' data-uid='"+last_uid+"' data-uname='"+users[last_uid]+"' data-groups='"+group_names.join(",")+"' >傳訊息告訴他</a></td></tr>");
+							if(groups[response[i].gid]){
+								if(last_uid == null){
+									last_uid = response[i].uid;
+									last_groups = [response[i].gid];
+									effect_user_count++;
+									effect_group_count++;
+								}else if(last_uid != response[i].uid){
+									effect_user_count++;
+									if(last_groups.length){
+										out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
+										var group_names = [];
+										$.each(last_groups,function(ind,item){
+											if(groups[item]){
+												out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item].Name+"</a><Br />");
+												group_names.push(groups[item].Name);
+											}
+										});
+										out.push("<td><a class='btn js-msg' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"' data-uid='"+last_uid+"' data-uname='"+users[last_uid]+"' data-groups='"+group_names.join(",")+"' >傳訊息告訴他</a></td></tr>");
+									}
+									last_uid = response[i].uid;
+									last_groups = [response[i].gid];
+									effect_group_count++;
+								}else{
+									effect_group_count++;
+									last_groups.push(response[i].gid);
 								}
-								last_uid = response[i].uid;
-								last_groups = [response[i].gid];
-								effect_group_count++;
-							}else{
-								effect_group_count++;
-								last_groups.push(response[i].gid);
 							}
 						}
 						if(last_uid != null){
@@ -274,8 +277,10 @@
 								out.push("<tr><td><a target='_blank' href='https://www.facebook.com/"+last_uid+"'>"+users[last_uid]+"</a></td><td>");
 								var group_names = [];
 								$.each(last_groups,function(ind,item){
-									out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item]+"</a><Br />");
-									group_names.push(groups[item]);
+									if(groups[item]){
+										out.push("<a href='https://www.facebook.com/groups/"+item+"' target='_blank'>"+groups[item].Name+"</a><Br />");
+										group_names.push(groups[item].Name);
+									}
 								});
 								out.push("<td><a class='btn js-msg' target='_blank' href='https://www.facebook.com/messages/"+last_uid+"' data-uid='"+last_uid+"' data-uname='"+users[last_uid]+"' data-groups='"+group_names.join(",")+"' >傳訊息告訴他</a></td></tr>");
 							}
