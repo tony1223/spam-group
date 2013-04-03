@@ -229,7 +229,7 @@
 			});
 
 			function parse(users,list,index){
-				var amount = 40;
+				var amount = 60;
 				var parseReq = $.Deferred();
 				var user_ids = [];
 				var indexEnd = index ;
