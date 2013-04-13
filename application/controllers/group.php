@@ -84,7 +84,7 @@ class Group extends MY_Controller {
 		if($type == "jsonp"){
 			$jsonp = $this->input->get("jsonp");
 			if(!empty($jsonp)){
-				echo $jsonp."(".json_encode($gids).")";
+				echo htmlspecialchars($jsonp)."(".json_encode($gids).")";
 			}else{
 				echo json_encode($gids);
 			}
