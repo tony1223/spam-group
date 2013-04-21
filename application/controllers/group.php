@@ -225,8 +225,11 @@ class Group extends MY_Controller {
 				"Reporter" => $uname
 		));
 
+		//#14 mark as unread after user +1
+		$this->GroupModel->mark_as($gid, $uid, false);
+
 		if($groupid == -1){
-			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增群組時發生意外錯誤" ));
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增社團時發生意外錯誤" ));
 			return false;
 		}
 		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));
