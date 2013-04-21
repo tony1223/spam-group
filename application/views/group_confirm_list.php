@@ -87,6 +87,13 @@
 				if(obj.IsSuccess){
 					$(self).text(obj.Data.Status);
 					$(self).data("read",obj.Data.Read);
+
+					if(obj.Data.Read == 1 ){
+						$(self).parents("tr").addClass("read-group");
+					}else{
+						$(self).parents("tr").removeClass("read-group");
+					}
+
 				}else{
 					alert(obj.ErrorMessage);
 				}

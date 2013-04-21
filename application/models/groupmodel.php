@@ -11,7 +11,7 @@ class GroupModel extends CI_Model {
 	}
 
 	function mark_as($gid,$confirmerUID,$read){
-		$this->db->where("GID" , $gid);
+		$this->db->where(Array("GID" => $gid , "Enabled" => false));
 		$this->db->update("spamgroup",
 			Array("Read" => $read,
 				"ModifyDate" => db_current_date(),"ConfirmerFBUID"=>$confirmerUID)
