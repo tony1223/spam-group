@@ -242,6 +242,10 @@ class Group extends MY_Controller {
 		$uid = $this->input->post("uid");
 		$uname = $this->input->post("uname");
 		$privacy = $this->input->post("privacy");
+		$creator = $this->input->post("creator");
+		$creatorName = $this->input->post("creatorName");
+
+		//scapeHTML(group.creator)+"'>"+escapeHTML(group.creatorName)+"</a>")
 
 		$groupid = $this->GroupModel->insert(
 			Array(
@@ -250,7 +254,9 @@ class Group extends MY_Controller {
 				"Type" => $privacy,
 				"Enabled" => false,
 				"ReporterFBUID" => $uid,
-				"Reporter" => $uname
+				"Reporter" => $uname,
+				"GroupCreator" => $creator,
+				"GroupCreatorName" => $creatorName
 		));
 
 		if($groupid == -1){

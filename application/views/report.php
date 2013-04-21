@@ -43,6 +43,7 @@
 						<td>社團編號(gid)</td>
 						<td>社團名稱</td>
 						<td>狀態</td>
+						<td>建立者</td>
 						<td>檢舉情形</td>
 					</tr>
 					<tbody id="group-info"></tbody>
@@ -126,13 +127,22 @@
 			//檢查是不是 gid
 			FB.api({
 			    method: 'fql.query',
-			    query: 'select gid,name,description,privacy,website from group where gid = \''+gid+'\''
+			    query: 'select gid,name,description,privacy,website,creator from group where gid = \''+gid+'\''
 			}, function(response) {
 				if(!response.length){
 					checkgid.reject(gid);
 					return false;
 				}
-				checkgid.resolve(response[0]);
+
+				FB.api("/"+gid, function(graph_group){
+					var group = response[0];
+					if(graph_group && graph_group.owner){
+						group.creator = graph_group.owner.id;
+						group.creatorName = graph_group.owner.name;
+					}
+
+					checkgid.resolve(group);
+				});
 			});
 
 			//2.1如果是 gid 的情況
@@ -150,6 +160,11 @@
 					out.push("<td>"+escapeHTML(group.gid)+"</td>");
 					out.push("<td>"+escapeHTML(group.name)+"</td>");
 					out.push("<td>"+escapeHTML(PRIVACYS[group.privacy])+"</td>");
+					out.push("<td>")
+					if(group.creator){
+						out.push("<a target='_blank' href='https://www.facebook.com/profile.php?id="+escapeHTML(group.creator)+"'>"+escapeHTML(group.creatorName)+"</a>")
+					}
+					out.push("</td>");
 					if(server_info == null){
 						out.push("<td class='status-"+group.gid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report btn' data-group='"+escapeHTML(group.gid)+"'>馬上檢舉</a></td>");
 					}else if(server_info.Enabled == "1"){
