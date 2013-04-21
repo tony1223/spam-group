@@ -1,6 +1,12 @@
 <?php include("_site_header.php") ?>
 
-<div class="container">
+<style>
+	.group-confirm .read-group{
+		background:gray;
+	}
+
+</style>
+<div class="container group-confirm">
 	<div class="row">
 		<div class="span8 offset2">
 			<div class="well">
@@ -14,25 +20,35 @@
 				<br />
 				審查中社團清單 (總數<?=count($fbgids)?>)
 				<table class="table">
-					<tr><td>Group ID</td><td>名字</td><td>加入時間</td><Td>+1數量</Td></tr>
+					<tr>
+						<td>Group ID</td>
+						<td>名字</td>
+						<Td>加入時社團類型</Td>
+						<td>加入時間</td>
+						<Td>+1數量</Td>
+					</tr>
 					<?php foreach($fbgids as $group){ ?>
-						<tr>
+						<tr class="<?=(isset($_SESSION["admin"]) && $group->Read)?"read-group":"" ?>">
 							<td><?=$group->GID?></td>
 							<td><a href="https://www.facebook.com/groups/<?=htmlspecialchars($group->GID)?>/members/?order=date" target="_blank"><?=htmlspecialchars($group->Name)?></a></td>
+							<td><?=$group->Type?></td>
 							<td><?=$group->CreateDate?></td>
 							<td><?=$group->RequestCount?></td>
 							<?php if( isset($_SESSION["admin"])  ){?>
-							<td> <a class="btn js-confirmed"  href="javascript:void 0;" data-gid="<?=htmlspecialchars($group->GID)?>">通過</a>  </td>
+							<td>
+								<a class="btn js-confirmed"  href="javascript:void 0;" data-gid="<?=htmlspecialchars($group->GID)?>">通過</a>
+								<a class="btn js-mark"  href="javascript:void 0;" data-gid="<?=htmlspecialchars($group->GID)?>"  data-read="<?=htmlspecialchars($group->Read ? "1" :"0")?>">
+									<?php if($group->Read){?>
+										標為未讀
+									<?php }else{?>
+										標為已讀
+									<?php }?>
+								</a>
+							</td>
 							<?php }?>
 						</tr>
 					<?php } ?>
 				</table>
-			</div>
-			<div>
-					註一：如果這些社團對你而言是正常運作，你不見得一定要退出他們。（但強烈建議取消。）<br />
-					註二：本 App 只使用 "取得社團清單權限" 並不會作為任何其他用途，若有疑慮請勿使用。<br />
-					註三：如果剛取消社團，但在本系統查詢還在，這是正常的 、FB API 反應比較慢。<Br />
-					註四：我們使用的社團清單來源。<a target="_blank" href="https://www.facebook.com/events/315380641913250/permalink/315383471912967/">https://www.facebook.com/events/315380641913250/permalink/315383471912967/</a>
 			</div>
 			<?php include("_content_nav.php");?>
 		</div>
@@ -61,6 +77,18 @@
 					$(self).text("已審核完成").prop("disabled","disabled");
 				}else{
 					$(self).text("審核失敗，再試一次");
+				}
+			});
+		});
+		$(".js-mark").click(function(){
+			var self = this;
+			$.post("<?=site_url("/group/js_mark_as_read")?>",{gid:$(this).data("gid"),read:$(this).data("read")},function(res){
+				var obj = JSON.parse(res);
+				if(obj.IsSuccess){
+					$(self).text(obj.Data.Status);
+					$(self).data("read",obj.Data.Read);
+				}else{
+					alert(obj.ErrorMessage);
 				}
 			});
 		});

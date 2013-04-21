@@ -135,7 +135,7 @@ class Group extends MY_Controller {
 
 	public function js_confirming(){
 		if(!isset($_SESSION["admin"])){
-			echo json_encode(Array("IsSuccess" => false));
+			echo json_encode(Array("IsSuccess" => false,"ErrorMessage" => "Not login yet"));
 			return false;
 		}
 
@@ -144,6 +144,27 @@ class Group extends MY_Controller {
 		$groupid = $this->GroupModel->confirm($gid,$_SESSION["admin"]);
 		echo json_encode(Array("IsSuccess" => true));
 	}
+
+	public function js_mark_as_read(){
+		if(!isset($_SESSION["admin"])){
+			echo json_encode(Array("IsSuccess" => false,"ErrorMessage" => "Not login yet"));
+			return false;
+		}
+		$gid = $this->input->post("gid");
+		$read = $this->input->post("read");
+		if($read == "1"){
+			$this->GroupModel->mark_as($gid, $_SESSION["admin"] , false);
+		}else{
+			$this->GroupModel->mark_as($gid, $_SESSION["admin"] , true);
+		}
+		echo json_encode(Array("IsSuccess" => true ,
+			"Data" =>
+				Array("Status" => ($read =="1" ? "標為已讀" :"標為未讀" ),"Read" => ($read =="1" ? "0":"1" ) )
+
+		));
+	}
+
+
 
 	private function get($url){
 		$options = array (CURLOPT_RETURNTRANSFER => true, // return web page

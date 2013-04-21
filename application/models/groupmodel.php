@@ -10,6 +10,15 @@ class GroupModel extends CI_Model {
 		$this->db->update("spamgroup",Array("Enabled" => true, "ModifyDate" => db_current_date(),"ConfirmerFBUID"=>$confirmerUID));
 	}
 
+	function mark_as($gid,$confirmerUID,$read){
+		$this->db->where("GID" , $gid);
+		$this->db->update("spamgroup",
+			Array("Read" => $read,
+				"ModifyDate" => db_current_date(),"ConfirmerFBUID"=>$confirmerUID)
+		);
+	}
+
+
 	function find_by_gid($gid){
 		$this->db->select("GID,Name,CreateDate,ModifyDate,Enabled");
 		$this->db->where("GID",$gid);
@@ -49,7 +58,7 @@ class GroupModel extends CI_Model {
 	}
 
 	function getConfirmingGIDs(){
-		$this->db->select("GID,Name,CreateDate,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
+		$this->db->select("GID,Name,CreateDate,Type,Read,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
 		$this->db->where("Enabled",false);
 		$query = $this->db->get("spamgroup");
 		$items = $query->result();
