@@ -23,7 +23,7 @@ class Group extends MY_Controller {
 	 */
 	public function index()
 	{
-		$gids = $this->getGids();
+		$gids = $this->getGids(true);
 		$this->load->view('welcome_message',
 			Array(
 				"pageTitle" => "Facebook 廣告社團檢查器",
@@ -59,9 +59,12 @@ class Group extends MY_Controller {
  		return $result;
 	}
 
-	private function getGids(){
+	private function getGids($loaddb = false){
 		$this->load->driver('cache');
-		if (!$this->cache->file->is_supported()){
+		if (!$this->cache->file->is_supported() ){
+			if($loaddb){
+				$this->load->database();
+			}
 			return $this->GroupModel->getGIDs();
 		}
 		$CACHE_ID = "Gids";
@@ -75,7 +78,7 @@ class Group extends MY_Controller {
 	}
 
 	public function groups($type="web"){
-		$gids = $this->getGids();
+		$gids = $this->getGids(true);
 
 		if($type == "json"){
 			echo json_encode($gids);
@@ -163,6 +166,33 @@ class Group extends MY_Controller {
 
 		));
 	}
+
+	public function _remap($method, $params = array())
+	{
+		if (!method_exists($this, $method))
+		{
+			show_404();
+			return null;
+		}
+		/*
+		if(isset($_GET["accesscode"]) && !_isLogined() ){
+			$backend = $this->config->item('backend');
+			if( $backend["accesscode"] == $this->input->get("accesscode") ){
+
+				$this->load->model("AdminModel");
+				$user = $this->AdminModel->get_user("access",$backend["accesscode"]);
+				$this->do_login($user);
+			}
+		}*/
+		if($method =="index" || $method =="groups"){
+			return call_user_func_array(array($this, $method), $params);
+		}else{
+			$this->load->database();
+			return call_user_func_array(array($this, $method), $params);
+		}
+
+	}
+
 
 
 

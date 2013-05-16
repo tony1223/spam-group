@@ -58,7 +58,7 @@ class GroupModel extends CI_Model {
 	}
 
 	function getConfirmingGIDs(){
-		$this->db->select("GID,Name,CreateDate,Type,Read,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
+		$this->db->select("GID,Name,GroupCreator,GroupCreatorName,CreateDate,Type,Read,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
 		$this->db->where("Enabled",false);
 		$query = $this->db->get("spamgroup");
 		$items = $query->result();

@@ -4,6 +4,9 @@
 	.group-confirm .read-group{
 		background:gray;
 	}
+	.group-confirm .confirm-group{
+		background:red;
+	}
 
 </style>
 <div class="container group-confirm">
@@ -25,7 +28,9 @@
 						<td>名字</td>
 						<Td>加入時社團類型</Td>
 						<td>加入時間</td>
+						<td class="span1">創立者</td>
 						<Td>+1數量</Td>
+						<td></td>
 					</tr>
 					<?php foreach($fbgids as $group){ ?>
 						<tr class="<?=(isset($_SESSION["admin"]) && $group->Read)?"read-group":"" ?>">
@@ -33,6 +38,13 @@
 							<td><a href="https://www.facebook.com/groups/<?=htmlspecialchars($group->GID)?>/members/?order=date" target="_blank"><?=htmlspecialchars($group->Name)?></a></td>
 							<td><?=$group->Type?></td>
 							<td><?=$group->CreateDate?></td>
+							<td><?
+								if($group->GroupCreatorName != null){
+									?>
+									<a href="https://www.facebook.com/profile.php?id=<?=htmlspecialchars($group->GroupCreator)?>"><?=htmlspecialchars($group->GroupCreatorName)?></a>
+									<?php
+								}
+							?></td>
 							<td><?=$group->RequestCount?></td>
 							<?php if( isset($_SESSION["admin"])  ){?>
 							<td>
@@ -75,6 +87,7 @@
 				var obj = JSON.parse(res);
 				if(obj.IsSuccess){
 					$(self).text("已審核完成").prop("disabled","disabled");
+					$(self).parents("tr").addClass("confirm-group");
 				}else{
 					$(self).text("審核失敗，再試一次");
 				}
