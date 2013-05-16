@@ -72,6 +72,9 @@ class Group extends MY_Controller {
 		if($data != false){
 			return $data;
 		}
+		if($loaddb){
+			$this->load->database();
+		}
 		$result = $this->GroupModel->getGIDs();
 		$this->cache->file->save($CACHE_ID, $result, 600);
  		return $result;
