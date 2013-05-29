@@ -24,10 +24,12 @@ class Group extends MY_Controller {
 	public function index()
 	{
 		$gids = $this->getGids(true);
+		$uids = $this->getUids(true);
 		$this->load->view('welcome_message',
 			Array(
 				"pageTitle" => "Facebook 廣告社團檢查器",
 				"fbgids" => $gids,
+				"fbuids" => $uids,
 				"selector" => "check"
 			)
 		);
@@ -39,8 +41,7 @@ class Group extends MY_Controller {
 			return
 				Array(
 					"chart_data" =>Array(
-						"全部" => $this->GroupModel->stat_day(),
-						"審核通過" => $this->GroupModel->stat_day_enabled()),
+						"審核通過社團" => $this->GroupModel->stat_day_enabled()),
 					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
 				);
 		}
@@ -51,8 +52,7 @@ class Group extends MY_Controller {
 		}
 		$result =Array(
 					"chart_data" =>Array(
-						"全部" => $this->GroupModel->stat_day(),
-						"審核通過" => $this->GroupModel->stat_day_enabled()),
+						"審核通過社團" => $this->GroupModel->stat_day_enabled()),
 					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
 		);
 		$this->cache->file->save($CACHE_ID, $result, 600);
@@ -79,6 +79,29 @@ class Group extends MY_Controller {
 		$this->cache->file->save($CACHE_ID, $result, 600);
  		return $result;
 	}
+
+
+	private function getUids($loaddb = false){
+		$this->load->driver('cache');
+		if (!$this->cache->file->is_supported()){
+			if($loaddb){
+				$this->load->database();
+			}
+			return $this->UserModel->getUIDs();
+		}
+		$CACHE_ID = "Uids";
+		$data = $this->cache->file->get($CACHE_ID);
+		if($data != false){
+			return $data;
+		}
+		if($loaddb){
+			$this->load->database();
+		}
+		$result = $this->UserModel->getUIDs();
+		$this->cache->file->save($CACHE_ID, $result, 600);
+ 		return $result;
+	}
+
 
 	public function groups($type="web"){
 		$gids = $this->getGids(true);
@@ -222,6 +245,7 @@ class Group extends MY_Controller {
 
 	public function report(){
 		$gurl = $this->input->get("gurl");
+		$uurl = $this->input->get("uurl");
 
 		$stat_infos = $this->get_stat_infos();
 		$this->load->view('report',
@@ -229,6 +253,7 @@ class Group extends MY_Controller {
 				"pageTitle" => "回報 Facebook 廣告社團",
 				"selector" => "report",
 				"gurl" => $gurl,
+				"uurl" => $uurl,
 				"chart_data" => $stat_infos["chart_data"],
 				"confirm_avg_date" => $stat_infos["confirm_avg_date"],
 				"group_count" => count($this->getGids())
@@ -267,6 +292,8 @@ class Group extends MY_Controller {
 		}
 		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));
 	}
+
+
 	public function js_insert_group(){
 //		die('{"IsSuccess":true,"Data":119}');
 
@@ -293,7 +320,7 @@ class Group extends MY_Controller {
 		));
 
 		if($groupid == -1){
-			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增群組時發生意外錯誤" ));
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增社團時發生意外錯誤" ));
 			return false;
 		}
 		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));

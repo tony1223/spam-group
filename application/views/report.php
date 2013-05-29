@@ -17,7 +17,7 @@
 					<form class="navbar-form" method="post" onsubmit="return false;" id="check-form">
 						請貼上要回報的廣告社團網址<Br />
 						<input type="text" class="span6" id="group" value="<?=htmlspecialchars($gurl)?>">
-						<button type="button" id="check" class="btn js-start" disabled>FB api 載入中</button>
+						<button type="button" id="check" class="btn js-user-login js-start" disabled>FB api 載入中</button>
 					</form>
 					<br>
 					網址範例：
@@ -33,11 +33,11 @@
 					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。
 					</p>
 					<div id="msg" class="alert" style="display:none;"></div>
-					<button type="button" id="check" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
+					<button type="button" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
 				</div>
 			</div>
 			<div class="groups well" id="groups" style="display:none;">
-				查詢紀錄
+				社團查詢紀錄
 				<table class="table" >
 					<tr>
 						<td>社團編號(gid)</td>
@@ -47,6 +47,42 @@
 						<td>檢舉情形</td>
 					</tr>
 					<tbody id="group-info"></tbody>
+				</table>
+			</div>
+			<div class="well">
+				<h2>回報新廣告使用者</h2>
+				<div>
+					<form class="navbar-form" method="post" onsubmit="return false;" id="check-user-form">
+						請貼上要回報的廣告使用者個人動態時報頁<Br />
+						<input type="text" class="span6" id="user" value="<?=htmlspecialchars($uurl)?>">
+						<button type="button" id="check-user" class="btn js-user-login js-user-start" disabled>FB api 載入中</button>
+					</form>
+					<br>
+					網址範例：
+					<ul>
+						<li>
+							https://www.facebook.com/profile.php?id=100005972521678
+						</li>
+						<li>
+							https://www.facebook.com/profile.php?id=100005973450961
+						</li>
+					</ul>
+					<p>
+					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。
+					</p>
+					<div id="msg-user" class="alert" style="display:none;"></div>
+					<button type="button" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
+				</div>
+			</div>
+			<div class="users well" id="users" style="display:none;">
+				使用者查詢紀錄
+				<table class="table" >
+					<tr>
+						<td>使用者編號(uid)</td>
+						<td>使用者名稱</td>
+						<td>檢舉情形</td>
+					</tr>
+					<tbody id="user-info"></tbody>
 				</table>
 			</div>
 			<?php include("_content_nav.php");?>
@@ -71,8 +107,9 @@
 	var groups = {};
 	function fb_init(){
 		var uid = null , uname = null;
+		var checked = false;
 		$(".js-start").on("click.auth",function(){
-			if($("#check").data("checked") != null){
+			if(checked){
 				return true;
 			}
 			 FB.login(function(response) {
@@ -81,7 +118,7 @@
 			    FB.api('/me', function(response) {
 				    if(response.name !== undefined){
 				    	uname = response.name;
-					    $("#check").data("checked","1");
+				    	checked = true;
 					    $("#check").trigger("click");
 					    $(".js-end").prop("disabled","");
 					    if(_gaq){
@@ -98,8 +135,36 @@
 			 },{"scope":"user_groups,friends_groups"});
 		});
 
+		$(".js-user-start").on("click.auth",function(){
+			if(checked){
+				return true;
+			}
+			 FB.login(function(response) {
+			   if (response.authResponse) {
+				   uid = response.authResponse.userID;
+			    FB.api('/me', function(response) {
+				    if(response.name !== undefined){
+				    	uname = response.name;
+				    	checked = true;
+					    $("#check-user").trigger("click");
+					    $(".js-end").prop("disabled","");
+					    if(_gaq){
+					    	_gaq.push(['_trackEvent', 'Login', "auth",uid+":"+ response.name]);
+					    }
+				    }
+				});
+			   } else {
+				   if(_gaq){
+				    	_gaq.push(['_trackEvent', 'Login', "canceled",null]);
+				   }
+				   $(".auth").text('使用者在認證過程中拒絕授權。');
+			   }
+			 },{"scope":"user_groups,friends_groups"});
+		});
+
+
 		function check(){
-			if($("#check").data("checked") == null){
+			if(!checked){
 				return true;
 			}
 			$("#msg").removeClass("alert-warning").hide();
@@ -117,6 +182,7 @@
 
 		}
 
+		/* --------------- check group ---------------- */
 		$("#check-form").on("submit",function(){
 			$("#check").trigger("click");
 			return false;
@@ -197,6 +263,7 @@
 				if(_gaq) {
 					 _gaq.push(['_trackEvent', 'Logout', "success",uid]);
 				}
+				checked = false;
 				self.location.reload();
 			});
 		});
@@ -246,7 +313,133 @@
 			});
 		});
 
-		$("#check").text("取得授權後檢查").prop("disabled","");
+
+		/*------------------ check user -------------------------------*/
+
+		function check_user(){
+			if(!checked){
+				return true;
+			}
+			$("#msg").removeClass("alert-warning").hide();
+
+			//1.從網址取得  gid 或 identify
+			var url = $("#user").val()+"/";// "/" just in case that not end with "/"
+			var matchs = url.match(/\/profile\.php\?id=([0-9]+).*/);
+			if(!(matchs && matchs[1] )){
+				$("#msg-user").text("網址無法解析").addClass("alert-warning").show();
+				return false;
+			}
+
+			var uid = matchs[1];
+			$("#check-user").trigger("checkuser",uid);
+
+		}
+
+		/* --------------- check group ---------------- */
+		$("#check-user-form").on("submit",check_user);
+		$("#check-user").on("click",check_user);
+		$("#check-user").on("checkuser",function(e,uid){
+			var checkuid = $.Deferred();
+			//檢查是不是 gid
+			FB.api({
+			    method: 'fql.query',
+			    query: 'select uid,first_name,last_name,is_blocked,friend_count,friend_request_count from user where uid = \''+uid+'\''
+			}, function(response) {
+				if(!response.length){
+					checkuid.reject(uid);
+					return false;
+				}
+
+				checkuid.resolve(response[0]);
+			});
+
+			//2.1如果是 gid 的情況
+			checkuid.done(function(user){
+				//CLOSED = 不公開
+				//Open = 公開
+				//Secret = 秘密
+				$("#msg").removeClass("alert-warning").hide();
+				$.get("<?=site_url("/user/js_report_uid/")?>",{uid:user.uid},function(res){
+					var server_info = JSON.parse(res);
+					$("#users").show();
+
+					var out = [];
+					out.push("<tr>");
+					out.push("<td>"+escapeHTML(user.uid)+"</td>");
+					out.push("<td><a target='_blank' href='https://www.facebook.com/profile.php?id="+escapeHTML(user.uid)+"'>"+escapeHTML(user.last_name +" "+user.first_name)+"</a>")
+					if(server_info == null){
+						out.push("<td class='status-user-"+user.uid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report-user btn' data-user='"+escapeHTML(user.uid)+"'>馬上檢舉</a></td>");
+					}else if(server_info.Enabled == "1"){
+						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告使用者清單</td>");
+					}else{
+						out.push("<td class='status-"+user.uid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a></td>");
+					}
+					users[user.uid]= user;
+					out.push("</tr>");
+					$("#user-info").prepend(out.join(""));
+				});
+			});
+
+
+			//2.2 如果不是 gid 的情況
+//			checkgid.fail(function(gid){
+//		        FB.api("/search?q="+encodeURIComponent(gid)+"&type=group", function(response){
+//			        if(!(response && response.data && response.data.length)){
+//			        	$("#msg").text("查無任何資料").addClass("alert-warning").show();
+//			        	return true;
+//			        }
+//		        	$("#msg").removeClass("alert-warning").hide();
+//			        var gid = response.data[0].id;
+//			        $("#check").trigger("checkgroup",gid);
+//		        });
+//			});
+		});
+		$("#users").on("click",".js-report-user",function(){
+			var uid = $(this).data("user"),
+				user = users[uid];
+			if(user == null){
+				alert("未知的例外情形，user 不存在。");
+				return false;
+			}
+			//post attributes: gid, name, privacy
+			$.post("<?=site_url("/user/js_insert_user/")?>",$.extend({report_uid:uid,report_uname:uname},user),function(res){
+				var info = JSON.parse(res);
+
+				if(info.IsSuccess){
+					$(".status-user-"+user.uid).text("檢舉成功，管理員將會儘快進行審核。");
+				}else{
+					if(info && info.ErrorMessage){
+						alert(info.ErrorMessage);
+					}else{
+						alert("檢舉時發生錯誤");
+					}
+				}
+			});
+		});
+		$("#users").on("click",".js-report-user-again",function(){
+			var uid = $(this).data("user"),
+			user = users[uid];
+			if(user == null){
+				alert("未知的例外情形，user 不存在。");
+				return false;
+			}
+			//post attributes: gid, name, privacy
+			$.post("<?=site_url("/user/js_report_user/")?>",$.extend({report_uid:uid,report_uname:uname},user),function(res){
+				var info = JSON.parse(res);
+
+				if(info.IsSuccess){
+					$(".status-"+user.uid).text("謝謝您的意見，我們將會作為審核參考。");
+				}else{
+					if(info && info.ErrorMessage){
+						alert(info.ErrorMessage);
+					}else{
+						alert("檢舉時發生錯誤");
+					}
+				}
+			});
+		});
+
+		$("#check,#check-user").text("取得授權後檢查").prop("disabled","");
 	}
 </script>
 

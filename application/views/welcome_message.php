@@ -18,14 +18,15 @@
 			</div>
 			<div class="well">
 				<p>
-					請參考 <a target="_blank" href="https://www.facebook.com/events/315380641913250/?ref=22">抵制盜帳號加人的網拍社團</a> 一活動，
-					相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！
+					請參考相關新聞 <a target="_blank" href="http://www.ettoday.net/news/20121218/141011.htm">臉書詐騙再升級！「購物社團」暗藏交易危機</a>！
 				</p>
 				<p>
 					不安全、<b>透過盜帳號惡意加入使用者</b>的購物社團可說是一種新型的網路蟑螂，
 					我們希望透過系統方式響應此一活動，讓使用者更方便檢查自己是否被惡意加入社團以方便退出社團，
 					或許你有朋友也在這些社團裡面，快分享給你的朋友吧！
 				</p>
+				<p><b style="color:red;">new!</b> 最近越來越多純廣告的 FB 使用者帳號，現在我們也加入掃描惡意廣告使用者帳號服務，資料庫資料還不多，歡迎檢舉惡意使用者。</p>
+
 				<div>
 					<h4>開始檢查</h4>
 					<p>依照以下流程順序點擊按鈕：</p>
@@ -34,7 +35,7 @@
 						<thead>
 							<tr>
 								<th></th>
-								<th class="step">步驟</th>
+								<th class="step span3">步驟</th>
 								<th>執行結果</th>
 							</tr>
 						</thead>
@@ -49,25 +50,32 @@
 						</tr>
 						<tr>
 							<th>1.</th>
-							<td><button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查社團</button></td>
+							<td><button class="btn js-check-group" disabled data-gids="<?=htmlspecialchars(json_encode($fbgids))?>" >檢查廣告社團</button></td>
 							<td>
 								<div class="check-group"></div>
 							</td>
 						</tr>
 						<tr>
 							<th>2.</th>
+							<td><button class="btn js-check-user" disabled data-uids="<?=htmlspecialchars(json_encode($fbuids))?>" >檢查廣告使用者</button></td>
+							<td>
+								<div class="check-user"></div>
+							</td>
+						</tr>
+						<tr>
+							<th>3.</th>
 							<td><button class="btn js-cancel-group" disabled> 退出社團</button></td>
 							<td>*FB 不支援自動退出，請手動退出</td>
 						</tr>
 						<tr>
-							<th>3.</th>
-							<td><button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查</button></td>
+							<th>4.</th>
+							<td><button class="btn js-checkfriend-group"  data-gids="<?=htmlspecialchars(json_encode($fbgids))?>"  disabled> 幫朋友檢查社團</button></td>
 							<td>
 								見下方結果
 							</td>
 						</tr>
 						<tr>
-							<th>4.</th>
+							<th>5.</th>
 							<td colspan="2">
 								<button class="btn js-end" disabled >取消授權並清空查詢</button>
 							</td>
@@ -117,7 +125,7 @@
 
 				    if(response.name !== undefined){
 					    $(".auth").text("已取得[ "+response.name+" ]授權").addClass("alert alert-success");
-					    $(".js-check-group,.js-end,.js-checkfriend-group").prop("disabled","");
+					    $(".js-check-group,.js-end,.js-checkfriend-group,.js-check-user").prop("disabled","");
 
 					    if(_gaq){
 					    	_gaq.push(['_trackEvent', 'Login', "auth",uid+":"+ response.name]);
@@ -141,6 +149,54 @@
 			   }
 			 },{"scope":"user_groups,friends_groups"});
 		});
+
+
+		$(".js-check-user").click(function(){
+			var label_selector = ".check-user";
+			$(label_selector).text("檢查好友中...");
+			var uids = $(this).data("uids");
+			var rule_uid = ['0'];
+			if(uids){
+				for(var i = 0; i < uids.length;i++){
+					rule_uid.push("'"+uids[i].UID+"'");
+				}
+			}
+
+			FB.api({
+			    method: 'fql.query',
+			    query: 'select name,uid from user where uid in (SELECT uid2 FROM friend WHERE uid1 = me() and uid2 in ('+rule_uid.join(",")+') )'
+			},function(response){
+				if(response.error_code){
+					$(label_selector).text("查詢失敗，可能登入狀態已過期");
+					_gaq.push(['_trackEvent', 'User', "fail"]);
+					return false;
+				}
+				var users = {};
+				$.each(response,function(){
+					users[this.uid] = this.name;
+				});
+				if(response.length ==0){
+					$(label_selector).html("恭喜你，沒有加入任何已知惡意廣告使用者<br /><br /> ");
+					if(_gaq){
+						_gaq.push(['_trackEvent', 'User', "not_found"]);
+					}
+					return true;
+				}
+
+				var user_label = [];
+				var found = ["糟糕了！<br />發現你已加入以下疑似惡意使用者，如果你不認識他，就趕快取消好友吧 :(  <Br />"];
+				$.each(response,function(){
+					user_label.push(this.gid+","+this.name+";;");
+					found.push("&nbsp;<a style='font-size:120%;' target='_blank' href='https://www.facebook.com/profile.php?id="+this.uid+"'>"+this.name+"</a> <Br />");
+				});
+				$(label_selector).html(found.join(""));
+				if(_gaq){
+					_gaq.push(['_trackEvent', 'User', "found",uid+"::"+user_label.join("")]);
+				}
+			});
+
+		});
+
 
 		$(".js-check-group").click(function(){
 			$(".check-group").text("查詢社團中...");
@@ -189,7 +245,7 @@
 		$(".js-end").click(function(){
 			FB.api('/me/permissions', 'delete', function(response) {
 				$(".auth").text("已取消授權").removeClass("alert alert-success");
-				 $(".js-check-group,.js-end,.js-checkfriend-group").prop("disabled","disabled");
+				 $(".js-check-group,.js-end,.js-checkfriend-group,js-check-user").prop("disabled","disabled");
 				 if(_gaq) {
 					 _gaq.push(['_trackEvent', 'Logout', "success",uid]);
 				 }
