@@ -372,7 +372,9 @@
 					}else if(server_info.Enabled == "1"){
 						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告使用者清單</td>");
 					}else{
-						out.push("<td class='status-"+user.uid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a></td>");
+						out.push("<td class='status-"+user.uid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。");
+
+								//"<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a></td>");
 					}
 					users[user.uid]= user;
 					out.push("</tr>");
