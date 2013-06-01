@@ -43,6 +43,10 @@ $route['404_override'] = '';
 $route["privacy"] = "group/privacy";
 $route["groups/(:any)"] = "group/groups/$1";
 $route["groups"] = "group/groups/$1";
+
+$route["users/(:any)"] = "user/users/$1";
+$route["users"] = "user/users/$1";
+
 $route["report"] = "group/report/$1";
 
 

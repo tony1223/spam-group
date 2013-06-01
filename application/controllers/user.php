@@ -8,10 +8,63 @@ class User extends MY_Controller {
 			show_404();
 			return null;
 		}
-		$this->load->database();
-		return call_user_func_array(array($this, $method), $params);
+
+		if( $method == "users" ){
+			return call_user_func_array(array($this, $method), $params);
+		}else{
+			$this->load->database();
+			return call_user_func_array(array($this, $method), $params);
+		}
 
 	}
+
+	private function getUids($loaddb = false){
+		$this->load->driver('cache');
+		if (!$this->cache->file->is_supported()){
+			if($loaddb){
+				$this->load->database();
+			}
+			return $this->UserModel->getUIDs();
+		}
+		$CACHE_ID = "Uids";
+		$data = $this->cache->file->get($CACHE_ID);
+		if($data != false){
+			return $data;
+		}
+		if($loaddb){
+			$this->load->database();
+		}
+		$result = $this->UserModel->getUIDs();
+		$this->cache->file->save($CACHE_ID, $result, 600);
+ 		return $result;
+	}
+
+	public function users($type="web"){
+		$uids = $this->getUids(true);
+
+		if($type == "json"){
+			echo json_encode($uids);
+			return true;
+		}else if($type == "jsonp"){
+			$jsonp = $this->input->get("jsonp");
+			if(!empty($jsonp)){
+				echo htmlspecialchars($jsonp)."(".json_encode($uids).")";
+			}else{
+				echo json_encode($uids);
+			}
+			return true;
+		}
+
+
+		$this->load->view('user_list',
+			Array(
+				"pageTitle" => "已認定 Facebook 廣告使用者列表",
+				"fbuids" => $uids,
+				"selector" => "user"
+			)
+		);
+	}
+
 	public function js_report_uid(){
 		$uid = $this->input->get("uid");
 		$user = $this->UserModel->find_by_uid($uid);
@@ -56,6 +109,40 @@ class User extends MY_Controller {
 		echo json_encode(Array("IsSuccess" => true, "Data" => $userid));
 		//ReporterFBUID
 	}
+
+
+	public function js_confirming(){
+		if(!isset($_SESSION["admin"])){
+			echo json_encode(Array("IsSuccess" => false,"ErrorMessage" => "Not login yet"));
+			return false;
+		}
+
+		$uid = $this->input->post("uid");
+
+		$userid = $this->UserModel->confirm($uid,$_SESSION["admin"]);
+		echo json_encode(Array("IsSuccess" => true));
+	}
+
+	public function js_mark_as_read(){
+		if(!isset($_SESSION["admin"])){
+			echo json_encode(Array("IsSuccess" => false,"ErrorMessage" => "Not login yet"));
+			return false;
+		}
+		$uid = $this->input->post("uid");
+		$read = $this->input->post("read");
+		if($read == "1"){
+			$this->UserModel->mark_as($uid, $_SESSION["admin"] , false);
+		}else{
+			$this->UserModel->mark_as($uid, $_SESSION["admin"] , true);
+		}
+		echo json_encode(Array("IsSuccess" => true ,
+			"Data" =>
+				Array("Status" => ($read =="1" ? "標為已讀" :"標為未讀" ),"Read" => ($read =="1" ? "0":"1" ) )
+
+		));
+	}
+
+
 	public function js_report_user(){
 		$gid = $this->input->post("uid");
 		$name = $this->input->post("name");
@@ -81,6 +168,20 @@ class User extends MY_Controller {
 		}
 		echo json_encode(Array("IsSuccess" => true, "Data" => $groupid));
 	}
+
+
+	public function confirming($type="web"){
+		$uids = $this->UserModel->getConfirmingUIDs();
+
+		$this->load->view('user_confirm_list',
+			Array(
+				"pageTitle" => "審核中 Facebook 廣告使用者列表",
+				"fbuids" => $uids,
+				"selector" => "group"
+			)
+		);
+	}
+
 
 }
 

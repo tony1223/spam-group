@@ -41,8 +41,11 @@ class Group extends MY_Controller {
 			return
 				Array(
 					"chart_data" =>Array(
-						"審核通過社團" => $this->GroupModel->stat_day_enabled()),
-					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
+						"審核通過社團數" => $this->GroupModel->stat_day_enabled(),
+						"審核通過使用者數"=> $this->UserModel->stat_day_enabled(),
+					),
+					"confirm_group_avg_date" => $this->GroupModel->confirm_avg_date(),
+					"confirm_user_avg_date" => $this->UserModel->confirm_avg_date()
 				);
 		}
 		$CACHE_ID = "chart_infos";
@@ -52,7 +55,9 @@ class Group extends MY_Controller {
 		}
 		$result =Array(
 					"chart_data" =>Array(
-						"審核通過社團" => $this->GroupModel->stat_day_enabled()),
+						"審核通過社團數" => $this->GroupModel->stat_day_enabled(),
+						"審核通過使用者數"=> $this->UserModel->stat_day_enabled()
+					),
 					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
 		);
 		$this->cache->file->save($CACHE_ID, $result, 600);

@@ -50,7 +50,7 @@ class UserModel extends CI_Model {
 	}
 
 	function getUIDs(){
-		$this->db->select("UID,Name,CreateDate,ModifyDate");
+		$this->db->select("UID,Name,CreateDate,FriendCount,ModifyDate");
 		$this->db->where("Enabled",true);
 		$query = $this->db->get("spamuser");
 		$items = $query->result();
@@ -58,11 +58,14 @@ class UserModel extends CI_Model {
 	}
 
 	function getConfirmingUIDs(){
-		$this->db->select("UID,Name,CreateDate,Type,Read,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
+		$this->db->select("UID,Name,CreateDate,Read,ModifyDate,
+			Read,IsBlocked,FriendCount,
+			(select count(distinct ReporterFBUID) from reportuser
+				where reportuser.UID = spamuser.UID) as RequestCount");
+
 		$this->db->where("Enabled",false);
 		$query = $this->db->get("spamuser");
-		$items = $query->result();
-		return $items;
+		return $query->result();
 	}
 
 //	function stat_day(){
@@ -74,18 +77,18 @@ class UserModel extends CI_Model {
 //		return $items;
 //	}
 //
-//	function stat_day_enabled(){
-//		$query = $this->db->query("SELECT DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) AS report_date, ".
-//			" COUNT( GroupID ) AS group_count FROM  `spamgroup` where Enabled = 1 and  CreateDate > '2013/2/18'".
-//			" GROUP BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ".
-//			" ORDER BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ASC");
-//		$items = $query->result();
-//		return $items;
-//	}
+	function stat_day_enabled(){
+		$query = $this->db->query("SELECT DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) AS report_date, ".
+			" COUNT( UserID ) AS group_count FROM  `spamuser` where Enabled = 1 and  CreateDate > '2013/2/18'".
+			" GROUP BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ".
+			" ORDER BY DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) ASC");
+		$items = $query->result();
+		return $items;
+	}
 
-//	function confirm_avg_date(){
-//		$query = $this->db->query("SELECT avg(DATEDIFF(ModifyDate,CreateDate)) AS time FROM  `spamgroup`".
-//			" where Enabled = 1 and CreateDate <> ModifyDate ");
-//		return $query->row()->time;
-//	}
+	function confirm_avg_date(){
+		$query = $this->db->query("SELECT avg(DATEDIFF(ModifyDate,CreateDate)) AS time FROM  `spamguser`".
+			" where Enabled = 1 and CreateDate <> ModifyDate ");
+		return $query->row()->time;
+	}
 }

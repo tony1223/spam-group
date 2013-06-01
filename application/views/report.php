@@ -9,7 +9,7 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
-		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-group_count="<?=$group_count?>" data-confirm_date="<?=$confirm_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
+		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-group_count="<?=$group_count?>" data-confirm_group_date="<?=$confirm_group_avg_date?>" data-confirm_user_date="<?=$confirm_user_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
 			</div>
 			<div class="well">
 				<h2>回報新廣告社團</h2>
@@ -31,6 +31,9 @@
 					</ul>
 					<p>
 					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。
+					</p>
+					<p>
+					如果無法順利透過系統檢舉，請將網址寄到 tonylovejava[at]gmail.com ，我會特別確認。
 					</p>
 					<div id="msg" class="alert" style="display:none;"></div>
 					<button type="button" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
@@ -68,7 +71,10 @@
 						</li>
 					</ul>
 					<p>
-					註：Facebook 要求要取得授權才能搜尋到大多數社團（非公開、秘密），所以需要登入。
+					註：Facebook 要求取得授權才能查詢完整資料，所以需要登入。
+					</p>
+					<p>
+					如果無法順利透過系統檢舉，請將網址寄到 tonylovejava[at]gmail.com ，我會特別確認。
 					</p>
 					<div id="msg-user" class="alert" style="display:none;"></div>
 					<button type="button" class="btn js-end" disabled="disabled">取消授權並清空查詢</button>
@@ -327,13 +333,23 @@
 
 			//1.從網址取得  gid 或 identify
 			var url = $("#user").val()+"/";// "/" just in case that not end with "/"
-			var matchs = url.match(/\/profile\.php\?id=([0-9]+).*/);
-			if(!(matchs && matchs[1] )){
+
+			var matchs_1 = url.match(/\/profile\.php\?id=([0-9]+).*/);
+			var matchs_2 = url.match(/www.facebook.com\/(.*?)\//);
+
+			var uid = null;
+
+			if((matchs_1 && matchs_1[1] )){
+				uid = matchs_1[1];
+			}else if(matchs_2 && matchs_2[1]){
+				uid = matchs_2[1].split("?")[0];
+			}
+
+			if(uid == null){
 				$("#msg-user").text("網址無法解析").addClass("alert-warning").show();
 				return false;
 			}
 
-			var uid = matchs[1];
 			$("#check-user").trigger("checkuser",uid);
 
 		}
@@ -387,17 +403,17 @@
 
 
 			//2.2 如果不是 gid 的情況
-//			checkgid.fail(function(gid){
-//		        FB.api("/search?q="+encodeURIComponent(gid)+"&type=group", function(response){
-//			        if(!(response && response.data && response.data.length)){
-//			        	$("#msg").text("查無任何資料").addClass("alert-warning").show();
-//			        	return true;
-//			        }
-//		        	$("#msg").removeClass("alert-warning").hide();
-//			        var gid = response.data[0].id;
-//			        $("#check").trigger("checkgroup",gid);
-//		        });
-//			});
+			checkuid.fail(function(uid){
+		        FB.api("/"+uid, function(response){
+			        if(!(response && response.first_name && response.last_name && response.id)){
+			        	$("#msg-user").text("查無任何資料").addClass("alert-warning").show();
+			        	return true;
+			        }
+		        	$("#msg-user").removeClass("alert-warning").hide();
+			        var uid = response.id;
+			        $("#check-user").trigger("checkuser",uid);
+		        });
+			});
 		});
 		$("#users").on("click",".js-report-user",function(){
 			var uid = $(this).data("user"),

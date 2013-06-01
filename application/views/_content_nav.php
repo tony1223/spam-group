@@ -10,6 +10,7 @@
     <ul class="nav">
       <li <?php if($selector=="check") { ?> class="active" <?php }?>><a href="<?=site_url("/")?>">檢查</a></li>
       <li <?php if($selector=="group") { ?> class="active" <?php }?>><a href="<?=site_url("/groups")?>">社團清單(API)</a></li>
+      <li <?php if($selector=="user") { ?> class="active" <?php }?>><a href="<?=site_url("/users")?>">使用者清單(API)</a></li>
       <li <?php if($selector=="report") { ?> class="active" <?php }?>><a href="<?=site_url("/report")?>">回報新廣告社團、使用者</a></li>
     </ul>
 
