@@ -100,6 +100,9 @@
 	    'use strict';
 	    var chr = { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' };
 	    return function (text) {
+		    if(text == null){
+			    return "";
+		    }
 	        return text.replace(/[\"&<>]/g, function (a) { return chr[a]; });
 	    };
 	}());
