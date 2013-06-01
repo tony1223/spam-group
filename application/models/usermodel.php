@@ -87,7 +87,7 @@ class UserModel extends CI_Model {
 	}
 
 	function confirm_avg_date(){
-		$query = $this->db->query("SELECT avg(DATEDIFF(ModifyDate,CreateDate)) AS time FROM  `spamguser`".
+		$query = $this->db->query("SELECT avg(DATEDIFF(ModifyDate,CreateDate)) AS time FROM  `spamuser`".
 			" where Enabled = 1 and CreateDate <> ModifyDate ");
 		return $query->row()->time;
 	}

@@ -35,9 +35,12 @@ class Group extends MY_Controller {
 		);
 	}
 
-	private function get_stat_infos(){
+	private function get_stat_infos($loaddb= false){
 		$this->load->driver('cache');
 		if (!$this->cache->file->is_supported()){
+			if($loaddb){
+				$this->load->database();
+			}
 			return
 				Array(
 					"chart_data" =>Array(
@@ -53,12 +56,16 @@ class Group extends MY_Controller {
 		if($data != false){
 			return $data;
 		}
+		if($loaddb){
+			$this->load->database();
+		}
 		$result =Array(
-					"chart_data" =>Array(
-						"審核通過社團數" => $this->GroupModel->stat_day_enabled(),
-						"審核通過使用者數"=> $this->UserModel->stat_day_enabled()
-					),
-					"confirm_avg_date" => $this->GroupModel->confirm_avg_date()
+			"chart_data" =>Array(
+				"審核通過社團數" => $this->GroupModel->stat_day_enabled(),
+				"審核通過使用者數"=> $this->UserModel->stat_day_enabled(),
+			),
+			"confirm_group_avg_date" => $this->GroupModel->confirm_avg_date(),
+			"confirm_user_avg_date" => $this->UserModel->confirm_avg_date()
 		);
 		$this->cache->file->save($CACHE_ID, $result, 600);
  		return $result;
@@ -215,7 +222,7 @@ class Group extends MY_Controller {
 				$this->do_login($user);
 			}
 		}*/
-		if($method =="index" || $method =="groups"){
+		if($method =="index" || $method =="groups" || $method == "report"){
 			return call_user_func_array(array($this, $method), $params);
 		}else{
 			$this->load->database();
@@ -252,7 +259,7 @@ class Group extends MY_Controller {
 		$gurl = $this->input->get("gurl");
 		$uurl = $this->input->get("uurl");
 
-		$stat_infos = $this->get_stat_infos();
+		$stat_infos = $this->get_stat_infos(true);
 		$this->load->view('report',
 			Array(
 				"pageTitle" => "回報 Facebook 廣告社團",
@@ -260,8 +267,10 @@ class Group extends MY_Controller {
 				"gurl" => $gurl,
 				"uurl" => $uurl,
 				"chart_data" => $stat_infos["chart_data"],
-				"confirm_avg_date" => $stat_infos["confirm_avg_date"],
-				"group_count" => count($this->getGids())
+				"confirm_group_avg_date" => $stat_infos["confirm_group_avg_date"],
+				"confirm_user_avg_date" => $stat_infos["confirm_user_avg_date"],
+				"group_count" => count($this->getGids(true)),
+				"user_count" => count($this->getUids(true))
 			)
 		);
 	}

@@ -9,7 +9,7 @@
 				<p><div style="height:60px;" class="fb-like" data-href="http://spamgroup.tonyq.org/" data-send="true" data-width="450" data-show-faces="true"></div></p>
 			</div>
 			<div class="well">
-		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-group_count="<?=$group_count?>" data-confirm_group_date="<?=$confirm_group_avg_date?>" data-confirm_user_date="<?=$confirm_user_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
+		        <div id="chart" style="min-width: 400px; height: 400px; margin: 0 auto" data-group_count="<?=$group_count?>" data-user_count="<?=$user_count?>"  data-confirm_group_date="<?=$confirm_group_avg_date?>" data-confirm_user_date="<?=$confirm_user_avg_date?>" data-info="<?=htmlspecialchars(json_encode($chart_data)) ?>"></div>
 			</div>
 			<div class="well">
 				<h2>回報新廣告社團</h2>
@@ -471,8 +471,10 @@
 $(function () {
 	var chart,
 		info = $("#chart").data("info"),
-		avg_date = $("#chart").data("confirm_date"),
-		group_count = $("#chart").data("group_count");
+		group_avg_date = $("#chart").data("confirm_group_date"),
+		group_count = $("#chart").data("group_count"),
+		user_avg_date = $("#chart").data("confirm_user_date"),
+		user_count = $("#chart").data("user_count");
 
 	var series = [];
 
@@ -517,7 +519,7 @@ $(function () {
 			x: -20 //center
 		},
 		subtitle: {
-			text: '平均審核日數 '+avg_date+' 天，總社團 ' + group_count+' 個',
+			text: '社團平均審核日數 '+ (parseInt(group_avg_date *10,10)/10) +' 天，總社團 ' + group_count+' 個；使用者平均審核日數 '+ (parseInt(user_avg_date *10,10)/10)+'天，總人數 '+ user_count +' 人',
 			x: -20
 		},
 		xAxis: {
