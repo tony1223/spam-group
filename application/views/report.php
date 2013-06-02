@@ -116,6 +116,7 @@
 	var groups = {};
 	function fb_init(){
 		var uid = null , uname = null;
+		var logined_uid = null;
 		var checked = false;
 		$(".js-start").on("click.auth",function(){
 			if(checked){
@@ -124,6 +125,7 @@
 			 FB.login(function(response) {
 			   if (response.authResponse) {
 				   uid = response.authResponse.userID;
+				   logined_uid = response.authResponse.userID;
 			    FB.api('/me', function(response) {
 				    if(response.name !== undefined){
 				    	uname = response.name;
@@ -151,6 +153,7 @@
 			 FB.login(function(response) {
 			   if (response.authResponse) {
 				   uid = response.authResponse.userID;
+				   logined_uid = response.authResponse.userID;
 			    FB.api('/me', function(response) {
 				    if(response.name !== undefined){
 				    	uname = response.name;
@@ -226,8 +229,9 @@
 				//Open = 公開
 				//Secret = 秘密
 				$("#msg").removeClass("alert-warning").hide();
-				$.get("<?=site_url("/group/js_report_gid/")?>",{gid:group.gid},function(res){
+				$.get("<?=site_url("/group/js_report_gid/")?>",{gid:group.gid,reporter:logined_uid},function(res){
 					var server_info = JSON.parse(res);
+					var server_group = server_info.group;
 					$("#groups").show();
 
 					var out = [];
@@ -240,12 +244,14 @@
 						out.push("<a target='_blank' href='https://www.facebook.com/profile.php?id="+escapeHTML(group.creator)+"'>"+escapeHTML(group.creatorName)+"</a>")
 					}
 					out.push("</td>");
-					if(server_info == null){
+					if(server_group == null){
 						out.push("<td class='status-"+group.gid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report btn' data-group='"+escapeHTML(group.gid)+"'>馬上檢舉</a></td>");
-					}else if(server_info.Enabled == "1"){
-						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告社團清單</td>");
+					}else if(server_group.Enabled == "1"){
+						out.push("<td>已於 "+server_group.ModifyDate+" 列入廣告社團清單</td>");
+					}else if(server_info.reported == null){
+						out.push("<td class='status-"+group.gid+"' >已有人於 " + server_group.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-again btn' data-group='"+escapeHTML(group.gid)+"'>檢舉 +1 </a></td>");
 					}else{
-						out.push("<td class='status-"+group.gid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-again btn' data-group='"+escapeHTML(group.gid)+"'>檢舉 +1 </a></td>");
+						out.push("<td>你已於 " + server_info.reported.CreateDate +" 檢舉，尚在審核中。</td>");
 					}
 					groups[group.gid]= group;
 					out.push("</tr>");
@@ -307,7 +313,7 @@
 				return false;
 			}
 			//post attributes: gid, name, privacy
-			$.post("<?=site_url("/group/js_report_group/")?>",$.extend({uid:uid,uname:uname},group),function(res){
+			$.post("<?=site_url("/group/js_report_group/")?>",$.extend({uid:logined_uid,uname:uname},group),function(res){
 				var info = JSON.parse(res);
 
 				if(info.IsSuccess){
@@ -378,22 +384,30 @@
 				//Open = 公開
 				//Secret = 秘密
 				$("#msg").removeClass("alert-warning").hide();
-				$.get("<?=site_url("/user/js_report_uid/")?>",{uid:user.uid},function(res){
+				$.get("<?=site_url("/user/js_report_uid/")?>",{uid:user.uid,reporter:logined_uid},function(res){
 					var server_info = JSON.parse(res);
+					var server_user = server_info.user;
 					$("#users").show();
 
 					var out = [];
 					out.push("<tr>");
 					out.push("<td>"+escapeHTML(user.uid)+"</td>");
 					out.push("<td><a target='_blank' href='https://www.facebook.com/profile.php?id="+escapeHTML(user.uid)+"'>"+escapeHTML(user.last_name +" "+user.first_name)+"</a>")
-					if(server_info == null){
+					if(server_user == null){
 						out.push("<td class='status-user-"+user.uid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report-user btn' data-user='"+escapeHTML(user.uid)+"'>馬上檢舉</a></td>");
-					}else if(server_info.Enabled == "1"){
-						out.push("<td>已於 "+server_info.ModifyDate+" 列入廣告使用者清單</td>");
+					}else if(server_user.Enabled == "1"){
+						out.push("<td class='status-user-"+user.uid+"' >已於 "+server_user.ModifyDate+" 列入廣告使用者清單");
+						if(server_info.reported != null){
+							out.push("，你已於 " + server_info.reported.CreateDate +" 檢舉。");
+						}else{
+							out.push("<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a>");
+						}
+						out.push("</td>");
+					}else if(server_info.reported == null){
+						out.push("<td class='status-user-"+user.uid+"' >已有人於 " + server_user.CreateDate +" 檢舉，尚在審核中。"
+								+ "<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a></td>");
 					}else{
-						out.push("<td class='status-"+user.uid+"' >已於 " + server_info.CreateDate +" 檢舉，尚在審核中。");
-
-								//"<a href='javascript:void 0;' class='js-report-user-again btn' data-user='"+escapeHTML(user.uid)+"'>檢舉 +1 </a></td>");
+						out.push("<td>你已於 " + server_info.reported.CreateDate +" 檢舉，尚在審核中。</td>");
 					}
 					users[user.uid]= user;
 					out.push("</tr>");
@@ -423,7 +437,7 @@
 				return false;
 			}
 			//post attributes: gid, name, privacy
-			$.post("<?=site_url("/user/js_insert_user/")?>",$.extend({report_uid:uid,report_uname:uname},user),function(res){
+			$.post("<?=site_url("/user/js_insert_user/")?>",$.extend({report_uid:logined_uid,report_uname:uname},user),function(res){
 				var info = JSON.parse(res);
 
 				if(info.IsSuccess){
@@ -445,11 +459,11 @@
 				return false;
 			}
 			//post attributes: gid, name, privacy
-			$.post("<?=site_url("/user/js_report_user/")?>",$.extend({report_uid:uid,report_uname:uname},user),function(res){
+			$.post("<?=site_url("/user/js_report_user/")?>",$.extend({report_uid:logined_uid,report_uname:uname},user),function(res){
 				var info = JSON.parse(res);
 
 				if(info.IsSuccess){
-					$(".status-"+user.uid).text("謝謝您的意見，我們將會作為審核參考。");
+					$(".status-user-"+user.uid).text("謝謝您的意見，我們將會作為審核參考。");
 				}else{
 					if(info && info.ErrorMessage){
 						alert(info.ErrorMessage);

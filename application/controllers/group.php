@@ -277,8 +277,11 @@ class Group extends MY_Controller {
 
 	public function js_report_gid(){
 		$gid = $this->input->get("gid");
+		$uid = $this->input->get("reporter");
 		$group = $this->GroupModel->find_by_gid($gid);
-		echo json_encode($group);
+		echo json_encode(Array("group"=>$group,
+			"reported" => $this->GroupModel->check_reported($gid,$uid)
+		));
 	}
 
 	public function js_report_group(){
@@ -331,6 +334,14 @@ class Group extends MY_Controller {
 				"Reporter" => $uname,
 				"GroupCreator" => $creator,
 				"GroupCreatorName" => $creatorName
+		));
+		$this->GroupModel->insert_report(
+			Array(
+				"Name" => $name ,
+				"GID" => $gid,
+				"Type" => $privacy,
+				"ReporterFBUID" => $uid,
+				"Reporter" => $uname
 		));
 
 		if($groupid == -1){

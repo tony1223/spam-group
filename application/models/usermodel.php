@@ -19,6 +19,18 @@ class UserModel extends CI_Model {
 	}
 
 
+	function check_reported($uid,$reporteduid){
+		$this->db->select("UserID,CreateDate");
+		$this->db->where("UID",$uid);
+		$this->db->where("ReporterFBUID",$reporteduid);
+		$query = $this->db->get("reportuser");
+
+		if ($query->num_rows() <= 0){ //如果查不到資料
+			return null;
+		}
+		return $query->row();
+	}
+
 	function find_by_uid($gid){
 		$this->db->select("UID,FirstName,LastName,CreateDate,ModifyDate,Enabled");
 		$this->db->where("UID",$gid);

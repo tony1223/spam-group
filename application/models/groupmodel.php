@@ -18,11 +18,22 @@ class GroupModel extends CI_Model {
 		);
 	}
 
-
 	function find_by_gid($gid){
 		$this->db->select("GID,Name,CreateDate,ModifyDate,Enabled");
 		$this->db->where("GID",$gid);
 		$query = $this->db->get("spamgroup");
+
+		if ($query->num_rows() <= 0){ //如果查不到資料
+			return null;
+		}
+		return $query->row();
+	}
+
+	function check_reported($gid,$reporteduid){
+		$this->db->select("GroupID,CreateDate");
+		$this->db->where("GID",$gid);
+		$this->db->where("ReporterFBUID",$reporteduid);
+		$query = $this->db->get("reportgroup");
 
 		if ($query->num_rows() <= 0){ //如果查不到資料
 			return null;
@@ -39,6 +50,7 @@ class GroupModel extends CI_Model {
 		$this->db->insert('reportgroup', $data);
 		return $this->db->insert_id();
 	}
+
 	function insert($data ){
 		if($data == null){
 			//Unexpected Issue
