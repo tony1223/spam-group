@@ -247,7 +247,14 @@
 					if(server_group == null){
 						out.push("<td class='status-"+group.gid+"' >尚未有人檢舉 <a href='javascript:void 0;' class='js-report btn' data-group='"+escapeHTML(group.gid)+"'>馬上檢舉</a></td>");
 					}else if(server_group.Enabled == "1"){
-						out.push("<td>已於 "+server_group.ModifyDate+" 列入廣告社團清單</td>");
+						out.push("<td class='status-"+group.gid+"' >已有人於 "+server_group.ModifyDate+" 列入廣告社團清單");
+						if(server_info.reported != null){
+							out.push("，你已於 " + server_info.reported.CreateDate +" 檢舉。");
+						}else{
+							out.push("<a href='javascript:void 0;' class='js-report-again btn'  data-group='"+escapeHTML(group.gid)+"'>檢舉 +1 </a>");
+						}
+						out.push("</td>");
+
 					}else if(server_info.reported == null){
 						out.push("<td class='status-"+group.gid+"' >已有人於 " + server_group.CreateDate +" 檢舉，尚在審核中。<a href='javascript:void 0;' class='js-report-again btn' data-group='"+escapeHTML(group.gid)+"'>檢舉 +1 </a></td>");
 					}else{

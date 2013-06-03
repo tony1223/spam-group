@@ -192,22 +192,30 @@
 		$(".js-check-group").click(function(){
 			$(".check-group").text("查詢社團中...");
 			var gids = $(this).data("gids");
-			var rule_gid = [];
+			var groups = {};
 			if(gids){
 				for(var i = 0; i < gids.length;i++){
-					rule_gid.push("'"+gids[i].GID+"'");
+					groups[gids[i].GID] = gids[i];
 				}
 			}
 			FB.api({
 			    method: 'fql.query',
-			    query: 'select gid,name,description,privacy,website from group where gid in ('+rule_gid+') and gid in (SELECT gid FROM group_member WHERE uid  = me())'
+			    query: 'select gid,name,description,privacy,website from group where gid in (SELECT gid FROM group_member WHERE uid  = me())'
 			}, function(response) {
 				if(response.error_code){
 					$(".check-group").text("查詢社團失敗，可能登入狀態已過期");
 					_gaq.push(['_trackEvent', 'Group', "fail"]);
 					return false;
 				}
-				if(response.length ==0){
+
+				var results = [] ;
+				for(var i = 0 ; i < response.length;++i){
+					if(groups[response[i].gid]){
+						results.push(response[i]);
+					}
+				}
+
+				if(results.length ==0){
 					$(".check-group").append("恭喜你，沒有加入任何已知惡意廣告社團<br /><br /> "+
 							" ＠預防重於治療，為保護您的帳號安全推薦您參考這篇文章 <Br />"+
 							" <a href='http://www.soft4fun.net/tips/3%E6%AD%A5%E9%98%B2%E5%A0%B5-facebook-%E5%B8%B3%E8%99%9F%E8%A2%AB%E7%9B%9C%E7%94%A8.htm' target='_blank'>3步防堵 Facebook 帳號被盜用，所有 Facebook 使用者必看！</a> "+
@@ -220,7 +228,7 @@
 
 				var group_label = [];
 				var found = ["糟糕了！發現你已加入以下疑似惡意廣告社團，趕快手動取消並檢舉社團吧 :(  <Br />"];
-				$.each(response,function(){
+				$.each(results,function(){
 					group_label.push(this.gid+","+this.name+";;");
 					found.push("&nbsp;<a style='font-size:120%;' target='_blank' href='https://www.facebook.com/groups/"+this.gid+"'>"+this.name+"</a> <Br />");
 				});
