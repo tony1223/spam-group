@@ -83,6 +83,13 @@
 						</tr>
 						</tbody>
 					</table>
+					<hr />
+					
+					<h2>覺得手動退出社團很累嗎？</h2>
+					如果你是用 Chrome 瀏覽器，可以下載由 Haraguroicha Hsu 協力開發完成的 
+					<a target="_blank" href="https://chrome.google.com/webstore/detail/%E6%88%91%E5%B0%B1%E6%98%AF%E8%A6%81%E9%9B%A2%E9%96%8B%E7%A4%BE%E5%9C%98/bdfdajiapmgbpimacnhdgpbfmedanalf">我就是要離開社團</a> Chrome Extension ，
+					我(TonyQ) 有協助 review 沒有安全性問題，歡迎下載使用。
+					
 				</div>
 
 			</div>
