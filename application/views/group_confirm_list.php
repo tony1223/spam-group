@@ -21,6 +21,10 @@
 				<button class="js-admin-auth btn">登入管理員（Tony Wang 限定）</button>
 				<br />
 				<br />
+				<?php if($_SESSION["admin"]){?>
+				<label><input type="checkbox" id="showAll" />顯示已讀案件</label>
+				<?php }?>
+				<br />
 				審查中社團清單 (總數<?=count($fbgids)?>)
 				<table class="table">
 					<tr>
@@ -69,7 +73,15 @@
 <div id="fb-root"></div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>
+	$(".read-group").hide();
 	function fb_init(){
+		$("#showAll").change(function(){
+			if(this.checked){
+				$(".read-group").show();
+			} else{
+				$(".read-group").hide();
+			}
+		});
 		$(".js-admin-auth").click(function(){
 			 FB.login(function(response) {
 			   if (response.authResponse) {
