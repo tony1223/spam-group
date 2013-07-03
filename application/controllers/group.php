@@ -286,6 +286,10 @@ class Group extends MY_Controller {
 
 	public function js_report_group(){
 		$gid = $this->input->post("gid");
+		if(empty($gid)){
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增社團時發生意外錯誤" ));
+			return false;
+		}
 		$name = $this->input->post("name");
 		$uid = $this->input->post("uid");
 		$uname = $this->input->post("uname");
@@ -319,6 +323,10 @@ class Group extends MY_Controller {
 //		die('{"IsSuccess":true,"Data":119}');
 
 		$gid = $this->input->post("gid");
+		if(empty($gid)){
+			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增社團時發生意外錯誤" ));
+			return false;
+		}
 		$name = $this->input->post("name");
 		$uid = $this->input->post("uid");
 		$uname = $this->input->post("uname");
