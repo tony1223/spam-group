@@ -302,6 +302,10 @@ class Group extends MY_Controller {
 
 		//#14 mark as unread after user +1
 		$this->GroupModel->mark_as($gid, $uid, false);
+		$group_now = $this->GroupModel->getConfirmingGID($gid);
+		if($group_now != null && $group_now->RequestCount > 30){
+			$this->GroupModel->confirm($gid,-1);
+		}
 
 		if($groupid == -1){
 			echo json_encode(Array("IsSuccess" => false, "ErrorCode" => 2 , "ErrorMessage" => "新增社團時發生意外錯誤" ));

@@ -80,6 +80,21 @@ class GroupModel extends CI_Model {
 		return $items;
 	}
 
+	function getConfirmingGID($gid){
+		$this->db->select("GID,Name,GroupCreator,GroupCreatorName,CreateDate,Type,Read,ModifyDate,(select count(distinct ReporterFBUID) from reportgroup where reportgroup.GID = spamgroup.GID) as RequestCount");
+		$this->db->where("Enabled",false);
+		$this->db->where("GID",$gid);
+		$this->db->order_by("Read","desc");
+		$this->db->order_by("RequestCount","desc");
+		$this->db->order_by("CreateDate","asc");
+		$query = $this->db->get("spamgroup");
+
+		if ($query->num_rows() <= 0){ //如果查不到資料
+			return null;
+		}
+		return $query->row();
+	}
+
 	function stat_day(){
 		$query = $this->db->query("SELECT DATE_FORMAT(  `CreateDate` ,  '%Y/%m/%d' ) AS report_date, ".
 			" COUNT( GroupID ) AS group_count FROM  `spamgroup` where CreateDate > '2013/2/18' ".
