@@ -307,7 +307,7 @@ class Group extends MY_Controller {
 		//#14 mark as unread after user +1
 		$this->GroupModel->mark_as($gid, $uid, false);
 		$group_now = $this->GroupModel->getConfirmingGID($gid);
-		if($group_now != null && $group_now->RequestCount > 20){
+		if($group_now != null && !$group_now->WhiteList && $group_now->RequestCount > 20){
 			$this->GroupModel->confirm($gid,-1);
 		}
 
