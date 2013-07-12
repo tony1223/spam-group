@@ -6,6 +6,9 @@
 	.step {
 		width:8em;
 	}
+	.well a{
+		color:#19A3FF;
+	}
 </style>
 <div class="container">
 	<div class="row">
