@@ -4,6 +4,6 @@ function db_current_date(){
 }
 
 function get_app_key(){
-	$keys = Array("339479699496192","339103652860490","135395566627129");
-	return $keys[rand(0, 2)];
+	$keys = Array("171680182893568");
+	return $keys[0];
 }
