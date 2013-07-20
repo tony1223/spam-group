@@ -6,6 +6,9 @@
 	.step {
 		width:8em;
 	}
+	.well a{
+		color:#19A3FF;
+	}
 </style>
 <div class="container">
 	<div class="row">
@@ -91,6 +94,17 @@
 					我(TonyQ) 有協助 review 沒有安全性問題，歡迎下載使用。<br />
 					<p>如果大家喜歡這個瀏覽器外掛或有任何問題，請到<a href="https://www.facebook.com/IWantQuitGroups" target="_blank">粉絲頁</a>進行詢問作者喔！</p>
 					
+					<h2>社團檢查方式說明</h2>
+					<p>
+						本社團純由網友回報並由人工一一檢閱，目前仍有 0.5% 的誤判率，<Br />
+						若您有發現或認為非廣告社團的社團，歡迎來信 tonylovejava@gmail.com 通報。<Br />
+						或是您為社團的經營者，也可以申請加入社團白名單，一樣來信告知您的社團。<Br />
+						<Br />
+						我們保證我們不會刻意誤置社團，但若您仍擔心退出不應該退出的社團，<Br />
+						請暫時不要使用自動退出社團 extension ，而使用本網站的檢查模式即可。<Br /><Br />
+						<Br />
+						目前會被列入廣告社團的都經過許多網友回報、檢舉並經過人工審核。
+					</p>
 				</div>
 
 			</div>
