@@ -142,8 +142,8 @@ class Group extends MY_Controller {
 		);
 	}
 
-	public function confirming($type="web"){
-		$gids = $this->GroupModel->getConfirmingGIDs();
+	public function confirming($read = 0){
+		$gids = $this->GroupModel->getConfirmingGIDs($read);
 
 		$this->load->view('group_confirm_list',
 			Array(
